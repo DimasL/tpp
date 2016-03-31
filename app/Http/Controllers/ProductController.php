@@ -174,24 +174,26 @@ class ProductController extends Controller
             $UsersSubscriptions = UsersSubscriptions::where('item_type', 'categories')
                 ->where('item_id', $request->category_id)
                 ->get();
+            $emails = [];
             foreach ($UsersSubscriptions as $UsersSubscription) {
-                $email = $UsersSubscription->user->email;
-                Mail::send('emails.newproductincategory', ['Product' => $Product, 'Category' => $Category], function ($message) use ($email) {
-                    $message->to($email)->subject('New product!');
-                });
+                $emails[] = $UsersSubscription->user->email;
             }
+            Mail::send('emails.newproductincategory', ['Product' => $Product, 'Category' => $Category], function ($message) use ($emails) {
+                $message->to($emails)->subject('New product!');
+            });
         }
 
-        if ($request->quantity > 0 && $Product->quantity == 0) {
+        if ($request->quantity > 0 && $Product->quantity < 1) {
             $UsersSubscriptions = UsersSubscriptions::where('item_type', 'products')
                 ->where('item_id', $Product->id)
                 ->get();
+            $emails = [];
             foreach ($UsersSubscriptions as $UsersSubscription) {
-                $email = $UsersSubscription->user->email;
-                Mail::send('emails.productexist', ['Product' => $Product], function ($message) use ($email) {
-                    $message->to($email)->subject('Product is available!');
-                });
+                $emails[] = $UsersSubscription->user->email;
             }
+            Mail::send('emails.productexist', ['Product' => $Product], function ($message) use ($emails) {
+                $message->to($emails)->subject('Product is available!');
+            });
         }
 
         foreach ($request->all() as $key => $value) {
