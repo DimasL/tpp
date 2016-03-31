@@ -41,14 +41,18 @@
                             @endif
                             @if(Auth::check())
                                 <div class="btn-group pull-right" role="group" style="margin:10px;">
-                                    @if(Auth::user()->subscribed('timeline', $UsersSubscription->subscription->id))
+                                    @if(Auth::user()->subscribed('timeline', $UsersSubscription->subscription->id) && $UsersSubscription->status())
                                         <a type="button" href="{{url('subscriptions/unsubscribe/' . $UsersSubscription->id)}}" class="btn btn-default btn-alert"><span
                                                     class="fa fa-minus-circle"></span> Unsubscribe
                                         </a>
                                     @else
-                                        <a type="button" href="{{url('subscriptions/subscribe/' . $UsersSubscription->id)}}" class="btn btn-default btn-success"><span
-                                                    class="fa fa-share-alt"></span> Subscribe again
-                                        </a>
+                                        @if(!$UsersSubscription->status())
+                                            <a type="button"
+                                               href="{{url('subscriptions/subscribe/' . $UsersSubscription->subscription->id)}}"
+                                               class="btn btn-default btn-success"><span
+                                                        class="fa fa-share-alt"></span> Subscribe again
+                                            </a>
+                                        @endif
                                         <a type="button" href="{{url('subscriptions/remove/' . $UsersSubscription->id)}}" class="btn btn-default btn-alert"><span
                                                     class="fa fa-minus-circle"></span> Delete
                                         </a>

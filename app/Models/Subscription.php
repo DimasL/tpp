@@ -26,7 +26,7 @@ class Subscription extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function subscriptions()
+    public function usersSubscriptions()
     {
         return $this->hasMany(UsersSubscriptions::class);
     }

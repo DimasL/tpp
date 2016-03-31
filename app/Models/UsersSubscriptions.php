@@ -41,14 +41,22 @@ class UsersSubscriptions extends Model
     public function status()
     {
         if ($this->item_type !== 'timeline' || $this->finish > date('Y-m-d H:i:s')) {
-            return 'active';
-        } else {
+            return true;
+        }/* else {
             $Subscriptions = self::where('subscription_id', $this->subscription_id)->get();
             foreach($Subscriptions as $Subscription) {
                 if ($Subscription->finish > date('Y-m-d H:i:s')) {
-                    return 'active_other';
+                    return 'status';
                 }
             }
+        }*/
+        return false;
+    }
+
+    public function getStatusTitle()
+    {
+        if ($this->status()) {
+            return 'active';
         }
         return 'inactive';
     }

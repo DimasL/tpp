@@ -44,7 +44,7 @@
                                             <td class="text-center">{{$Subscription->item_type}}</td>
                                             <td class="text-center">{{$Subscription->start}}</td>
                                             <td class="text-center">{{$Subscription->finish}}</td>
-                                            <td class="text-center">{{$Subscription->status()}}</td>
+                                            <td class="text-center">{{$Subscription->getStatusTitle()}}</td>
                                             <td class="text-center">{{$Subscription->created_at}}</td>
                                             <td class="text-right">
                                                 <a href="{{url('mysubscriptions/view/' . $Subscription->id)}}" title="More info">
