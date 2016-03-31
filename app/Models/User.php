@@ -42,10 +42,10 @@ class User extends Authenticatable
     public function isSubscribed($item_type, $id)
     {
         switch ($item_type) {
-            case 'timeline':
+            case 'subscriptions':
                 $usersSubscriptions = $this->usersSubscriptions()
                     ->where('item_type', $item_type)
-                    ->where('subscription_id', $id)
+                    ->where('item_id', $id)
                     ->get();
                 foreach ($usersSubscriptions as $usersSubscription) {
                     if (strtotime($usersSubscription->finish) > time()) {
@@ -72,7 +72,7 @@ class User extends Authenticatable
     public function isSubsribeEnd($id)
     {
         $usersSubscriptions = $this->usersSubscriptions()
-            ->where('subscription_id', $id)
+            ->where('item_id', $id)
             ->get();
         foreach ($usersSubscriptions as $usersSubscription) {
             if (strtotime($usersSubscription->finish) > time()) {

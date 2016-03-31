@@ -25,8 +25,8 @@
                     <li class="@yield('categories_active')"><a href="{{ url('categories') }}">Categories</a></li>
                     <li class="@yield('products_active')"><a href="{{ url('products') }}">Products</a></li>
                     <li class="@yield('mysubscriptions_active')"><a href="{{ url('mysubscriptions') }}">My Subscriptions</a></li>
+                    <li class="@yield('subscriptions_active')"><a href="{{ url('subscriptions') }}">Subscriptions</a></li>
                     @if(in_array('admin', Auth::user()->roles()->lists('slug')->toArray()))
-                        <li class="@yield('subscriptions_active')"><a href="{{ url('subscriptions') }}">Subscriptions</a></li>
                         <li class="@yield('logs_active')"><a href="{{ url('logs') }}">Logs</a></li>
                     @endif
                 @endif

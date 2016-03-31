@@ -27,10 +27,10 @@ class UsersSubscriptions extends Model
      */
     public function status()
     {
-        if ($this->item_type !== 'timeline' || $this->finish > date('Y-m-d H:i:s')) {
+        if ($this->item_type !== 'subscriptions' || $this->finish > date('Y-m-d H:i:s')) {
             return true;
         }/* else {
-            $Subscriptions = self::where('subscription_id', $this->subscription_id)->get();
+            $Subscriptions = self::where('item_id', $this->item_id)->get();
             foreach($Subscriptions as $Subscription) {
                 if ($Subscription->finish > date('Y-m-d H:i:s')) {
                     return true;
@@ -66,6 +66,9 @@ class UsersSubscriptions extends Model
                 break;
             case 'products':
                 return Product::find($this->item_id);
+                break;
+            case 'subscriptions':
+                return Subscription::find($this->item_id);
                 break;
             default:
                 return null;

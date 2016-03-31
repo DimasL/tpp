@@ -40,7 +40,7 @@ class UserController extends Controller
             'user_id' => Auth::user()->id,
             'text' => 'Show user info by id="' . $id . '"',
             'type' => 'read',
-            'status' => success,
+            'status' => 'success',
         ]);
         return view('users.index')
             ->with(['User' => $User]);

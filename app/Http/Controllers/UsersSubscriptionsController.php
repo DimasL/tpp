@@ -142,8 +142,8 @@ class UsersSubscriptionsController extends Controller
         $currentTime = time();
         $UsersSubscription = UsersSubscriptions::create([
             'user_id' => Auth::user()->id,
-            'item_type' => 'timeline',
-            'subscription_id' => $id,
+            'item_type' => 'subscriptions',
+            'item_id' => $id,
             'start' => date('Y-m-d H:i:s', $currentTime),
             'finish' => date('Y-m-d H:i:s', $currentTime + $Subscription->duration * 86400)
         ]);

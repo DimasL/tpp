@@ -17,7 +17,6 @@ class CreateUsersSubscriptionsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('item_type')->nullable();
             $table->string('item_id')->nullable();
-            $table->integer('subscription_id')->unsigned()->nullable();
             $table->dateTime('start')->nullable();
             $table->dateTime('finish')->nullable();
             $table->integer('status')->default(0);

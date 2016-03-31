@@ -42,7 +42,7 @@
                             <p>Duration(Days): {{$Subscription->duration}}</p>
                             @if(Auth::check())
                                 <div class="btn-group pull-right" role="group" style="margin:10px;">
-                                    @if(!Auth::user()->isSubscribed('timeline', $Subscription->id))
+                                    @if(!Auth::user()->isSubscribed('subscriptions', $Subscription->id))
                                         <a type="button" href="{{url('subscriptions/subscribe/' . $Subscription->id)}}" class="btn btn-default btn-success"><span
                                                     class="fa fa-share-alt"></span> Subscribe
                                         </a>

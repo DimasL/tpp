@@ -29,11 +29,7 @@
                         <!-- UsersSubscription Info-->
                         <div class="col-xs-12 col-sm-12">
                             <h3 id="product-title">
-                                @if($UsersSubscription->subscription)
-                                    Title: <a href="{{url('/subscriptions/view/' . $UsersSubscription->subscription->id)}}">{{$UsersSubscription->subscription->title}}</a>
-                                @else
-                                    {{ucfirst($UsersSubscription->item_type)}} subscribe: <a href="{{url('/' . $UsersSubscription->item_type . '/view/' . $UsersSubscription->item_id)}}">{{$UsersSubscription->getSubscriptionItem()->title}}</a>
-                                @endif
+                                {{ucfirst($UsersSubscription->item_type)}}: <a href="{{url('/' . $UsersSubscription->item_type . '/view/' . $UsersSubscription->item_id)}}">{{$UsersSubscription->getSubscriptionItem()->title}}</a>
                             </h3>
                             @if($UsersSubscription->start)
                             <p>Start: {{$UsersSubscription->start}}</p>
@@ -41,7 +37,7 @@
                             @endif
                             @if(Auth::check())
                                 <div class="btn-group pull-right" role="group" style="margin:10px;">
-                                    @if(Auth::user()->isSubscribed('timeline', $UsersSubscription->subscription->id) && $UsersSubscription->status())
+                                    @if(Auth::user()->isSubscribed($UsersSubscription->item_type, $UsersSubscription->item_id) && $UsersSubscription->status())
                                         <a type="button" href="{{url('subscriptions/unsubscribe/' . $UsersSubscription->id)}}" class="btn btn-default btn-alert"><span
                                                     class="fa fa-minus-circle"></span> Unsubscribe
                                         </a>

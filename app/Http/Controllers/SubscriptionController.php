@@ -45,14 +45,14 @@ class SubscriptionController extends Controller
         $Statistics = Statistics::orderBy('created_at', 'desc')
             ->where('user_id', Auth::user()->id)
             ->where('event_type', 'view')
-            ->where('item_type', 'subscription')
+            ->where('item_type', 'subscriptions')
             ->where('item_id', $id)
             ->first();
         if (!$Statistics || strtotime($Statistics->created_at) + 86400 <= time()) {
             Statistics::create([
                 'user_id' => Auth::user()->id,
                 'event_type' => 'view',
-                'item_type' => 'subscription',
+                'item_type' => 'subscriptions',
                 'item_id' => $id,
             ]);
         }
