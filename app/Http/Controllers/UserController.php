@@ -1,0 +1,189 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests;
+use App\Models\Log;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+
+class UserController extends Controller
+{
+
+    /**
+     * User Validate array
+     * @var array
+     */
+    public $rules = [
+        'name' => 'required',
+        'email' => 'required|email',
+        'image' => 'image'
+    ];
+
+    /**
+     * Show User Info
+     * @param $id
+     * @return $this
+     */
+    public function index($id)
+    {
+        $User = User::find($id);
+        if(!$User) {
+            abort(404);
+        }
+        $status =  $User ? 'sucess' : 'fail';
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Show user info by id="' . $id . '"',
+            'type' => 'read',
+            'status' => $status,
+        ]);
+        return view('users.index')
+            ->with(['User' => $User]);
+    }
+
+    /**
+     * Create user
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $result = $this->saveUser($request);
+
+            if(!$result['status']) {
+                return redirect('users/create')
+                    ->withInput()
+                    ->withErrors($result['validator']);
+            }
+            return redirect('users/view/' . $result['User']->id)
+                ->with('success_message', 'User has been created.');
+        }
+        return view('users.create');
+    }
+
+    /**
+     * Update User Action
+     * @param $id
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function update($id, Request $request)
+    {
+        $User = User::find($id);
+        if(!$User) {
+            abort(404);
+        }
+        $Roles = Role::all();
+        if ($request->isMethod('post') && $User) {
+            $result = $this->saveUser($request, $User);
+
+            if(!$result['status']) {
+                return redirect('users/update/' . $User->id)
+                    ->with(['User' => $User])
+                    ->withInput()
+                    ->withErrors($result['validator']);
+            }
+
+            return redirect('users')
+                ->with('success_message', 'User has been updated.');
+        }
+        return view('users.update')
+            ->with(['User' => $User, 'Roles' => $Roles]);
+    }
+
+    /**
+     * Show User Info
+     * @param $id
+     * @return $this
+     */
+    public function delete($id)
+    {
+        $User = User::find($id);
+        try {
+            $User->delete();
+        } catch (\Exception $e) {
+            return $e;
+        }
+        return redirect('users')
+            ->with('success_message', 'User has been deleted.');
+    }
+
+    /**
+     * Show User List
+     * @return $this
+     */
+    public function userList()
+    {
+        $Users = User::all();
+        return view('users.list')
+            ->with(['Users' => $Users]);
+    }
+
+    /**
+     * Save User
+     * @param Request $request
+     * @param User|null $User
+     * @return User
+     */
+    public function saveUser(Request $request, User $User = null)
+    {
+        $validator = Validator::make($request->all(), $this->rules);
+
+        if ($validator->fails()) {
+            return [
+                'status' => false,
+                'validator' => $validator,
+            ];
+        }
+
+        if(!$User) {
+            $User = User::create();
+            $User->roles()->sync([2]);
+        }
+
+        foreach($request->all() as $key => $value) {
+            if($key != 'image' && $key != 'noImage' && in_array($key, $User->map())) {
+                $User->{$key} = $value;
+            }
+        }
+
+        if($request->input('role')) {
+            $User->roles()->sync([$request->input('role')]);
+        }
+
+        if($request->input('noImage')) {
+            $filename = $User->image;
+            $User->image = '';
+            if($filename && file_exists(public_path() . '/assets/images/users/' .$filename)) {
+                Storage::delete(public_path() . '/assets/images/users/' . $filename);
+            }
+        } else {
+            if( $request->hasFile('image') ) {
+                $file = $request->file('image');
+                $filename = $User->id . '_' . microtime(true) * 10000 . '.' . $file->getClientOriginalExtension();
+                if($User->image && file_exists(public_path() . '/assets/images/users/' . $User->image)) {
+                    @Storage::delete(public_path() . '/assets/images/users/' . $User->image);
+                }
+                $file->move(public_path() .'/assets/images/users/', $filename);
+                $User->image = $filename;
+            }
+        }
+
+        try {
+            $User->save();
+        } catch(\Exception $e) {
+            return $e;
+        }
+
+        return [
+            'status' => true,
+            'User' => $User
+        ];
+    }
+}
