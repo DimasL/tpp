@@ -115,6 +115,18 @@ Route::group(['middleware' => 'web'], function () {
             'uses' => 'SubscriptionController@index'
         ]);
 
+        Route::any('subscribe/{id}', [
+            'uses' => 'UsersSubscriptionsController@subscribe'
+        ]);
+
+        Route::any('unsubscribe/{id}', [
+            'uses' => 'UsersSubscriptionsController@unsubscribe'
+        ]);
+
+        Route::any('remove/{id}', [
+            'uses' => 'UsersSubscriptionsController@unsubscribe'
+        ]);
+
         Route::group(['before' => 'csrf'], function () {
 
             Route::any('create', [
@@ -146,20 +158,8 @@ Route::group(['middleware' => 'web'], function () {
             'uses' => 'UsersSubscriptionsController@index'
         ]);
 
-        Route::any('subscribe/{id}', [
-            'uses' => 'UsersSubscriptionsController@subscribe'
-        ]);
-
         Route::any('resume/{id}', [
             'uses' => 'UsersSubscriptionsController@subscribe'
-        ]);
-
-        Route::any('unsubscribe/{id}', [
-            'uses' => 'UsersSubscriptionsController@unsubscribe'
-        ]);
-
-        Route::any('remove/{id}', [
-            'uses' => 'UsersSubscriptionsController@unsubscribe'
         ]);
 
     });

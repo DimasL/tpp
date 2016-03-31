@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 
 class Subscription extends Model
@@ -44,7 +45,28 @@ class Subscription extends Model
 
     static function remind()
     {
-        //
+        $UsersSubscriptions = UsersSubscriptions::where('item_type', 'timeline')
+            ->where('status', 0)
+            ->get();
+
+        foreach ($UsersSubscriptions as $UsersSubscription) {
+            $email = $UsersSubscription->user->email;
+            $Subscription = $UsersSubscription->subscription;
+            Mail::send('emails.subscriptionexpired', ['Subscription' => $Subscription], function ($message) use ($email) {
+                $message->to($email)->subject('Product is available!');
+            });
+            $UsersSubscription->status = 1;
+            try {
+                $UsersSubscription->save();
+            } catch (\Exception $e) {
+                return $e;
+            }
+        }
+    }
+
+    public function getUrl()
+    {
+        return url('subscriptions/view/' . $this->id);
     }
 
     /**

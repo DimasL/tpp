@@ -20,6 +20,7 @@ class CreateUsersSubscriptionsTable extends Migration
             $table->integer('subscription_id')->unsigned()->nullable();
             $table->dateTime('start')->nullable();
             $table->dateTime('finish')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

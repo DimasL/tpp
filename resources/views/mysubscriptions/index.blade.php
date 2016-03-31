@@ -39,11 +39,22 @@
                             <p>Start: {{$UsersSubscription->start}}</p>
                             <p>Finish: {{$UsersSubscription->finish}}</p>
                             @endif
-                            <div class="btn-group pull-right" role="group" style="margin:10px;">
-                                <a type="button" href="{{url('mysubscriptions/unsubscribe/' . $UsersSubscription->id)}}" class="btn btn-default btn-alert"><span
-                                            class="fa fa-minus-circle"></span> Unsubscribe
-                                </a>
-                            </div>
+                            @if(Auth::check())
+                                <div class="btn-group pull-right" role="group" style="margin:10px;">
+                                    @if(Auth::user()->subscribed('timeline', $UsersSubscription->subscription->id))
+                                        <a type="button" href="{{url('subscriptions/unsubscribe/' . $UsersSubscription->id)}}" class="btn btn-default btn-alert"><span
+                                                    class="fa fa-minus-circle"></span> Unsubscribe
+                                        </a>
+                                    @else
+                                        <a type="button" href="{{url('subscriptions/subscribe/' . $UsersSubscription->id)}}" class="btn btn-default btn-success"><span
+                                                    class="fa fa-share-alt"></span> Subscribe again
+                                        </a>
+                                        <a type="button" href="{{url('subscriptions/remove/' . $UsersSubscription->id)}}" class="btn btn-default btn-alert"><span
+                                                    class="fa fa-minus-circle"></span> Delete
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -43,7 +43,7 @@
                             @if(Auth::check())
                                 <div class="btn-group pull-right" role="group" style="margin:10px;">
                                     @if(!Auth::user()->subscribed('timeline', $Subscription->id))
-                                        <a type="button" href="{{url('mysubscriptions/subscribe/' . $Subscription->id)}}" class="btn btn-default btn-success"><span
+                                        <a type="button" href="{{url('subscriptions/subscribe/' . $Subscription->id)}}" class="btn btn-default btn-success"><span
                                                     class="fa fa-share-alt"></span> Subscribe
                                         </a>
                                     @endif
