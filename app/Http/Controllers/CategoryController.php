@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Log;
-use App\Models\Product;
 use App\Models\Statistics;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +16,8 @@ class CategoryController extends Controller
 {
 
     /**
-     * Category Validate array
+     * Validate array
+     *
      * @var array
      */
     public $rules = [
@@ -27,7 +26,8 @@ class CategoryController extends Controller
     ];
 
     /**
-     * Show Category Info
+     * Show Category Info view
+     *
      * @param $id
      * @return $this
      */
@@ -37,12 +37,11 @@ class CategoryController extends Controller
         if (!$Category) {
             abort(404);
         }
-        $status = $Category ? 'sucess' : 'fail';
         Log::create([
             'user_id' => Auth::user()->id,
             'text' => 'Show pruduct info by id="' . $id . '"',
             'type' => 'read',
-            'status' => $status,
+            'status' => 'success',
         ]);
         $Statistics = Statistics::orderBy('created_at', 'desc')
             ->where('user_id', Auth::user()->id)
@@ -63,9 +62,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * Create category
+     * Create category action
+     *
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function create(Request $request)
     {
@@ -88,6 +88,7 @@ class CategoryController extends Controller
 
     /**
      * Update Category Action
+     *
      * @param $id
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
@@ -120,6 +121,7 @@ class CategoryController extends Controller
 
     /**
      * Get all disabled categories ids
+     *
      * @param $Category
      * @param array $array
      * @return array
@@ -136,9 +138,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show Category Info
+     * Delete category action
+     *
      * @param $id
-     * @return $this
+     * @return \Exception|\Illuminate\Http\RedirectResponse
      */
     public function delete($id)
     {
@@ -169,7 +172,8 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show Category List
+     * Show Category List view
+     *
      * @return $this
      */
     public function categoriesList()
@@ -181,25 +185,21 @@ class CategoryController extends Controller
     }
 
     /**
-     * Save Category
+     * Save Category action
+     *
      * @param Request $request
      * @param Category|null $Category
-     * @return Category
+     * @return array|\Exception
      */
     public function saveCategory(Request $request, Category $Category = null)
     {
         $validator = Validator::make($request->all(), $this->rules);
 
         if ($validator->fails()) {
-            return [
-                'status' => false,
-                'validator' => $validator,
-            ];
+            return ['status' => false, 'validator' => $validator,];
         }
 
-        if (!$Category) {
-            $Category = Category::create();
-        }
+        !$Category ? $Category = Category::create() : null;
 
         foreach ($request->all() as $key => $value) {
             if ($key != 'image' && $key != 'noImage' && in_array($key, $Category->map())) {
@@ -231,9 +231,6 @@ class CategoryController extends Controller
             return $e;
         }
 
-        return [
-            'status' => true,
-            'Category' => $Category
-        ];
+        return ['status' => true, 'Category' => $Category];
     }
 }

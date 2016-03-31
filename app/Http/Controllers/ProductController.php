@@ -19,6 +19,7 @@ class ProductController extends Controller
 
     /**
      * Product Validate array
+     *
      * @var array
      */
     public $rules = [
@@ -29,7 +30,8 @@ class ProductController extends Controller
     ];
 
     /**
-     * Show Product Info
+     * Show Product Info view
+     *
      * @param $id
      * @return $this
      */
@@ -39,22 +41,22 @@ class ProductController extends Controller
         if (!$Product) {
             abort(404);
         }
-        $status = $Product ? 'sucess' : 'fail';
+        $User = Auth::user();
         Log::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => $User->id,
             'text' => 'Show pruduct info by id="' . $id . '"',
             'type' => 'read',
-            'status' => $status,
+            'status' => 'success',
         ]);
         $Statistics = Statistics::orderBy('created_at', 'desc')
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', $User->id)
             ->where('event_type', 'view')
             ->where('item_type', 'product')
             ->where('item_id', $id)
             ->first();
         if (!$Statistics || strtotime($Statistics->created_at) + 86400 <= time()) {
             Statistics::create([
-                'user_id' => Auth::user()->id,
+                'user_id' => $User->id,
                 'event_type' => 'view',
                 'item_type' => 'product',
                 'item_id' => $id,
@@ -65,9 +67,10 @@ class ProductController extends Controller
     }
 
     /**
-     * Create product
+     * Create product action
+     *
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function create(Request $request)
     {
@@ -89,7 +92,8 @@ class ProductController extends Controller
     }
 
     /**
-     * Update Product Action
+     * Update Product action
+     *
      * @param $id
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
@@ -100,36 +104,32 @@ class ProductController extends Controller
         if (!$Product) {
             abort(404);
         }
-        $Categories = Category::all();
-
         if ($request->isMethod('post') && $Product) {
             $result = $this->saveProduct($request, $Product);
-
             if (!$result['status']) {
                 return redirect('products/update/' . $Product->id)
                     ->with(['Product' => $Product])
                     ->withInput()
                     ->withErrors($result['validator']);
             }
-
             return redirect('products')
                 ->with('success_message', 'Product has been updated.');
         }
 
         return view('products.update')
-            ->with(['Product' => $Product, 'Categories' => $Categories]);
+            ->with(['Product' => $Product, 'Categories' => Category::all()]);
     }
 
     /**
-     * Show Product Info
+     * Delete Product action
+     *
      * @param $id
-     * @return $this
+     * @return \Exception|\Illuminate\Http\RedirectResponse
      */
     public function delete($id)
     {
-        $Product = Product::find($id);
         try {
-            $Product->delete();
+            Product::find($id)->delete();
         } catch (\Exception $e) {
             return $e;
         }
@@ -138,31 +138,29 @@ class ProductController extends Controller
     }
 
     /**
-     * Show Product List
+     * Show Product List view
+     *
      * @return $this
      */
     public function productList()
     {
-        $Products = Product::all();
         return view('products.list')
-            ->with(['Products' => $Products]);
+            ->with(['Products' => Product::all()]);
     }
 
     /**
-     * Save Product
+     * Save Product action
+     *
      * @param Request $request
      * @param Product|null $Product
-     * @return Product
+     * @return array|\Exception
      */
     public function saveProduct(Request $request, Product $Product = null)
     {
         $validator = Validator::make($request->all(), $this->rules);
 
         if ($validator->fails()) {
-            return [
-                'status' => false,
-                'validator' => $validator,
-            ];
+            return ['status' => false, 'validator' => $validator];
         }
 
         if (!$Product) {
@@ -226,20 +224,19 @@ class ProductController extends Controller
             return $e;
         }
 
-        return [
-            'status' => true,
-            'Product' => $Product
-        ];
+        return ['status' => true, 'Product' => $Product];
     }
 
     /**
-     * Show products by category_id
+     * Show products action
+     *
      * @param $category_id
      * @return $this
      */
     public function productListByCategory($category_id)
     {
-        $Products = Product::where('category_id', $category_id)->get();
+        $Products = Product::where('category_id', $category_id)
+            ->get();
         $Category = Category::find($category_id);
         return view('products.list')
             ->with(['Products' => $Products, 'Category' => $Category]);

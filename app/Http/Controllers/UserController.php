@@ -25,7 +25,8 @@ class UserController extends Controller
     ];
 
     /**
-     * Show User Info
+     * Show User Info view
+     *
      * @param $id
      * @return $this
      */
@@ -35,21 +36,21 @@ class UserController extends Controller
         if(!$User) {
             abort(404);
         }
-        $status =  $User ? 'sucess' : 'fail';
         Log::create([
             'user_id' => Auth::user()->id,
             'text' => 'Show user info by id="' . $id . '"',
             'type' => 'read',
-            'status' => $status,
+            'status' => success,
         ]);
         return view('users.index')
             ->with(['User' => $User]);
     }
 
     /**
-     * Create user
+     * Create user action
+     *
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function create(Request $request)
     {
@@ -68,7 +69,8 @@ class UserController extends Controller
     }
 
     /**
-     * Update User Action
+     * Update User action
+     *
      * @param $id
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
@@ -98,15 +100,15 @@ class UserController extends Controller
     }
 
     /**
-     * Show User Info
+     * Delete User action
+     *
      * @param $id
-     * @return $this
+     * @return \Exception|\Illuminate\Http\RedirectResponse
      */
     public function delete($id)
     {
-        $User = User::find($id);
         try {
-            $User->delete();
+            User::find($id)->delete();
         } catch (\Exception $e) {
             return $e;
         }
@@ -115,31 +117,29 @@ class UserController extends Controller
     }
 
     /**
-     * Show User List
+     * Show User List view
+     *
      * @return $this
      */
     public function userList()
     {
-        $Users = User::all();
         return view('users.list')
-            ->with(['Users' => $Users]);
+            ->with(['Users' => User::all()]);
     }
 
     /**
-     * Save User
+     * Save User action
+     *
      * @param Request $request
      * @param User|null $User
-     * @return User
+     * @return array|\Exception
      */
     public function saveUser(Request $request, User $User = null)
     {
         $validator = Validator::make($request->all(), $this->rules);
 
         if ($validator->fails()) {
-            return [
-                'status' => false,
-                'validator' => $validator,
-            ];
+            return ['status' => false,'validator' => $validator];
         }
 
         if(!$User) {
@@ -181,9 +181,6 @@ class UserController extends Controller
             return $e;
         }
 
-        return [
-            'status' => true,
-            'User' => $User
-        ];
+        return ['status' => true,'User' => $User];
     }
 }

@@ -9,24 +9,8 @@ class LogController extends Controller
 {
 
     /**
-     * Delete log by id
-     * @param $id
-     * @return \Exception|\Illuminate\Http\RedirectResponse
-     */
-    public function delete($id)
-    {
-        $Log = Log::find($id);
-        try {
-            $Log->delete();
-        } catch (\Exception $e) {
-            return $e;
-        }
-        return redirect('logs')
-            ->with('success_message', 'Log has been deleted.');
-    }
-
-    /**
-     * Show Log List
+     * Show Log List view
+     *
      * @return $this
      */
     public function logList()
@@ -38,7 +22,9 @@ class LogController extends Controller
     }
 
     /**
-     * Delete logs by filter
+     * Delete all logs action
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function deleteAll()
     {

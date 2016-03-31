@@ -6,8 +6,6 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Subscription;
 use App\Models\UsersSubscriptions;
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +13,8 @@ class UsersSubscriptionsController extends Controller
 {
 
     /**
-     * Show UsersSubscriptions info
+     * Show UsersSubscriptions info view
+     *
      * @param $id
      * @return $this
      */
@@ -27,7 +26,8 @@ class UsersSubscriptionsController extends Controller
     }
 
     /**
-     * Show Subscription List
+     * Show Subscription List view
+     *
      * @return $this
      */
     public function mySubscriptionsList()
@@ -39,6 +39,12 @@ class UsersSubscriptionsController extends Controller
             ->with(['UsersSubscriptions' => $UsersSubscriptions]);
     }
 
+    /**
+     * Subscribe to Category action
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function categorySubscribe($id)
     {
         $Category = Category::find($id);
@@ -53,6 +59,12 @@ class UsersSubscriptionsController extends Controller
         return back();
     }
 
+    /**
+     * Delete subscribe action
+     *
+     * @param $id
+     * @return \Exception|\Illuminate\Http\RedirectResponse
+     */
     public function categoryUnsubscribe($id)
     {
         $UsersSubscriptions = UsersSubscriptions::where('user_id', Auth::user()->id)
@@ -71,6 +83,12 @@ class UsersSubscriptionsController extends Controller
         return back();
     }
 
+    /**
+     * Subscribe to Product action
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function productSubscribe($id)
     {
         $Product = Product::find($id);
@@ -85,6 +103,12 @@ class UsersSubscriptionsController extends Controller
         return back();
     }
 
+    /**
+     * Delete subscribe action
+     *
+     * @param $id
+     * @return \Exception|\Illuminate\Http\RedirectResponse
+     */
     public function productUnsubscribe($id)
     {
         $UsersSubscriptions = UsersSubscriptions::where('user_id', Auth::user()->id)
@@ -103,6 +127,12 @@ class UsersSubscriptionsController extends Controller
         return back();
     }
 
+    /**
+     * Subscribe action
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function subscribe($id)
     {
         $Subscription = Subscription::find($id);
@@ -120,10 +150,14 @@ class UsersSubscriptionsController extends Controller
         return redirect('mysubscriptions/view/' . $UsersSubscription->id);
     }
 
+    /**
+     * Delete subscribe action
+     *
+     * @param $id
+     * @return \Exception|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function unsubscribe($id)
     {
-//todo:
-//        $UsersSubscription = Auth::user()->usersSubscriptions()->where('id', $id)->first();
         $UsersSubscription = UsersSubscriptions::find($id);
         try {
             $UsersSubscription->delete();
@@ -133,6 +167,12 @@ class UsersSubscriptionsController extends Controller
         return redirect('mysubscriptions');
     }
 
+    /**
+     * Resume subscribe action
+     *
+     * @param $id
+     * @return \Exception|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function resume($id)
     {
         $UsersSubscription = UsersSubscriptions::find($id);

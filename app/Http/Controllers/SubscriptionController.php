@@ -7,17 +7,16 @@ use App\Models\Log;
 use App\Models\Statistics;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class SubscriptionController extends Controller
 {
     /**
      * Subscription Validate array
+     *
      * @var array
      */
     public $rules = [
@@ -27,21 +26,21 @@ class SubscriptionController extends Controller
 
     /**
      * Show Subscription Info
+     *
      * @param $id
      * @return $this
      */
     public function index($id)
     {
         $Subscription = Subscription::find($id);
-        if(!$Subscription) {
+        if (!$Subscription) {
             abort(404);
         }
-        $status = $Subscription ? 'sucess' : 'fail';
         Log::create([
             'user_id' => Auth::user()->id,
             'text' => 'Show pruduct info by id="' . $id . '"',
             'type' => 'read',
-            'status' => $status,
+            'status' => 'success',
         ]);
         $Statistics = Statistics::orderBy('created_at', 'desc')
             ->where('user_id', Auth::user()->id)
@@ -62,9 +61,10 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Create subscription
+     * Create subscription action
+     *
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function create(Request $request)
     {
@@ -86,7 +86,8 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Update Subscription Action
+     * Update Subscription action
+     *
      * @param $id
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
@@ -94,10 +95,9 @@ class SubscriptionController extends Controller
     public function update($id, Request $request)
     {
         $Subscription = Subscription::find($id);
-        if(!$Subscription) {
+        if (!$Subscription) {
             abort(404);
         }
-        $Categories = Category::all();
 
         if ($request->isMethod('post') && $Subscription) {
             $result = $this->saveSubscription($request, $Subscription);
@@ -114,19 +114,19 @@ class SubscriptionController extends Controller
         }
 
         return view('subscriptions.update')
-            ->with(['Subscription' => $Subscription, 'Categories' => $Categories]);
+            ->with(['Subscription' => $Subscription, 'Categories' => Category::all()]);
     }
 
     /**
-     * Show Subscription Info
+     * Delete subscription action
+     *
      * @param $id
-     * @return $this
+     * @return \Exception|\Illuminate\Http\RedirectResponse
      */
     public function delete($id)
     {
-        $Subscription = Subscription::find($id);
         try {
-            $Subscription->delete();
+            Subscription::find($id)->delete();
         } catch (\Exception $e) {
             return $e;
         }
@@ -135,31 +135,29 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Show Subscription List
+     * Show Subscription List view
+     *
      * @return $this
      */
     public function subscriptionList()
     {
-        $Subscriptions = Subscription::all();
         return view('subscriptions.list')
-            ->with(['Subscriptions' => $Subscriptions]);
+            ->with(['Subscriptions' => Subscription::all()]);
     }
 
     /**
-     * Save Subscription
+     * Save Subscription action
+     *
      * @param Request $request
      * @param Subscription|null $Subscription
-     * @return Subscription
+     * @return array|\Exception
      */
     public function saveSubscription(Request $request, Subscription $Subscription = null)
     {
         $validator = Validator::make($request->all(), $this->rules);
 
         if ($validator->fails()) {
-            return [
-                'status' => false,
-                'validator' => $validator,
-            ];
+            return ['status' => false, 'validator' => $validator];
         }
 
         if (!$Subscription) {
@@ -178,9 +176,6 @@ class SubscriptionController extends Controller
             return $e;
         }
 
-        return [
-            'status' => true,
-            'Subscription' => $Subscription
-        ];
+        return ['status' => true, 'Subscription' => $Subscription];
     }
 }
