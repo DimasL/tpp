@@ -7,8 +7,10 @@ use App\Models\Log;
 use App\Models\Product;
 use App\Models\Statistics;
 use App\Http\Requests;
+use App\Models\UsersSubscriptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,7 +23,8 @@ class ProductController extends Controller
      */
     public $rules = [
         'title' => 'required',
-        'price' => 'required',
+        'price' => 'numeric',
+        'quantity' => 'numeric',
         'image' => 'image'
     ];
 
@@ -33,7 +36,7 @@ class ProductController extends Controller
     public function index($id)
     {
         $Product = Product::find($id);
-        if(!$Product) {
+        if (!$Product) {
             abort(404);
         }
         $status = $Product ? 'sucess' : 'fail';
@@ -94,7 +97,7 @@ class ProductController extends Controller
     public function update($id, Request $request)
     {
         $Product = Product::find($id);
-        if(!$Product) {
+        if (!$Product) {
             abort(404);
         }
         $Categories = Category::all();
@@ -166,6 +169,31 @@ class ProductController extends Controller
             $Product = Product::create();
         }
 
+        if ($request->category_id && $Product->category_id != $request->category_id) {
+            $Category = Category::find($request->category_id);
+            $UsersSubscriptions = UsersSubscriptions::where('item_type', 'categories')
+                ->where('item_id', $request->category_id)
+                ->get();
+            foreach ($UsersSubscriptions as $UsersSubscription) {
+                $email = $UsersSubscription->user->email;
+                Mail::send('emails.newproductincategory', ['Product' => $Product, 'Category' => $Category], function ($message) use ($email) {
+                    $message->to($email)->subject('New product!');
+                });
+            }
+        }
+
+        if ($request->quantity > 0 && $Product->quantity == 0) {
+            $UsersSubscriptions = UsersSubscriptions::where('item_type', 'products')
+                ->where('item_id', $Product->id)
+                ->get();
+            foreach ($UsersSubscriptions as $UsersSubscription) {
+                $email = $UsersSubscription->user->email;
+                Mail::send('emails.productexist', ['Product' => $Product], function ($message) use ($email) {
+                    $message->to($email)->subject('Product is available!');
+                });
+            }
+        }
+
         foreach ($request->all() as $key => $value) {
             if ($key != 'image' && $key != 'noImage' && in_array($key, $Product->map())) {
                 $Product->{$key} = $value;
@@ -175,7 +203,7 @@ class ProductController extends Controller
         if ($request->input('noImage')) {
             $filename = $Product->image;
             $Product->image = '';
-            if($filename && file_exists(public_path() . '/assets/images/products/' . $filename)) {
+            if ($filename && file_exists(public_path() . '/assets/images/products/' . $filename)) {
                 Storage::delete(public_path() . '/assets/images/products/' . $filename);
             }
         } else {

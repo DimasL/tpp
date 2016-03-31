@@ -10,14 +10,14 @@
     display: none;
 }
 
-span.have-children {
+div.have-children {
     cursor: pointer;
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
     user-select: none;
-    color:#337ab7;
+    color: #337ab7;
 }
 
 .float-right {
@@ -26,4 +26,8 @@ span.have-children {
 
 div.categories-list:hover {
     background-color: #f5f5f5;
+}
+
+ul.categories-list-main li {
+    list-style-type: none;
 }

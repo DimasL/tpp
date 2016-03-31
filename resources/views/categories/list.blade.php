@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <ul>
+                        <ul class="categories-list-main">
                             @foreach ($Categories as $Category)
                                 @include('categories.template')
                             @endforeach

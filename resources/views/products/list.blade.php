@@ -10,7 +10,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-6">
-                                Products list @if(isset($Category))(Category: <a href="{{ url('/categories/view/' . $Category->id) }}">{{ $Category->title }}</a>) @endif
+                                Products list @if(isset($Category))(Category: <a href="{{$Category->getUrl()}}">{{ $Category->title }}</a>) @endif
                             </div>
                             <div class="col-md-3"></div>
                             <div class="col-md-3 text-right">
@@ -36,6 +36,7 @@
                                     <td class="text-center">Category</td>
                                     <td class="text-center">Title</td>
                                     <td class="text-center">Price</td>
+                                    <td class="text-center">Quantity</td>
                                     <td class="text-center">Created at</td>
                                     <td class="text-right"></td>
                                 </thead>
@@ -44,12 +45,13 @@
                                         <tr>
                                             <td class="text-center">{{$key}}</td>
                                             <td class="text-center">{{$Product->sku}}</td>
-                                            <td class="text-center">{{$Product->getCategoryTitle()}}</td>
+                                            <td class="text-center">@if($Product->category){{$Product->category->title}}@endif</td>
                                             <td class="text-center">{{$Product->title}}</td>
                                             <td class="text-center">{{$Product->price}}</td>
+                                            <td class="text-center">{{$Product->quantity}}</td>
                                             <td class="text-center">{{$Product->created_at}}</td>
                                             <td class="text-right">
-                                                <a href="{{url('products/view/' . $Product->id)}}" title="More info">
+                                                <a href="{{$Product->getUrl()}}" title="More info">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 @if(Auth::user()->isUserCan('update'))

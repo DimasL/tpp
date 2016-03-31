@@ -19,6 +19,7 @@ class ProductTableSeeder extends Seeder
             'sku' => '1',
             'image' => '1.jpg',
             'description' => 'description 1',
+            'quantity' => 1,
             'category_id' => 1
         ]);
         DB::table('products')->insert([
@@ -27,6 +28,7 @@ class ProductTableSeeder extends Seeder
             'sku' => '2',
             'image' => '2.png',
             'description' => 'description 2',
+            'quantity' => 2,
             'category_id' => 2
         ]);
         DB::table('products')->insert([
@@ -35,6 +37,7 @@ class ProductTableSeeder extends Seeder
             'sku' => '3',
             'image' => '3.png',
             'description' => 'description 3',
+            'quantity' => 0,
             'category_id' => 3
         ]);
     }

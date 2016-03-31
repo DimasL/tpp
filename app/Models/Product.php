@@ -42,15 +42,12 @@ class Product extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Category::class)->first();
+        return $this->belongsTo(Category::class);
     }
 
-    public function getCategoryTitle()
+    public function getUrl()
     {
-        if (!$this->category()) {
-            return null;
-        }
-        return $this->category()->title;
+        return url('products/view/' . $this->id);
     }
 
     public function map()

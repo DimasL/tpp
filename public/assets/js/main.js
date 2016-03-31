@@ -42,8 +42,7 @@ Tpp.prototype = {
             e.preventDefault();
             self.deleteImage(this);
         });
-        self.container.find('span.have-children').on('click', function (e) {
-            e.preventDefault();
+        self.container.find('div.have-children').on('click', function () {
             self.toggleSubcategories(this);
         });
     },

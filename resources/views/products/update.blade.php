@@ -21,7 +21,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{url('products/view/' . $Product->id)}}" title="View">
+                                        <a href="{{$Product->getUrl()}}" title="View">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                     </li>
@@ -72,13 +72,19 @@
 
                                 <div class="form-group @if($errors->first('price'))has-error @endif">
                                     <label class="control-label" for="priceInput">Price*</label>
-                                    <input name="price" type="number" step="any" min="1" value="@if(old('price')){{old('price')}}@else{{$Product->price}}@endif" class="form-control" id="priceInput" placeholder="Price">
+                                    <input name="price" type="number" step="any" min="0" value="@if(old('price')){{old('price')}}@else{{$Product->price}}@endif" class="form-control" id="priceInput" placeholder="Price">
                                     <span class="help-block">{{$errors->first('price')}}</span>
+                                </div>
+
+                                <div class="form-group @if($errors->first('quantity'))has-error @endif">
+                                    <label class="control-label" for="quantityInput">Quantity</label>
+                                    <input name="quantity" type="number" step="any" value="@if(old('quantity')){{old('quantity')}}@else{{$Product->quantity}}@endif" class="form-control" id="quantityInput" placeholder="Quantity">
+                                    <span class="help-block">{{$errors->first('quantity')}}</span>
                                 </div>
 
                                 <div class="form-group @if($errors->first('description'))has-error @endif">
                                     <label class="control-label" for="description">Description</label>
-                                    <textarea id="description" name="description" class="form-control" rows="3" placeholder="Product description">@if(old('description')){{old('description')}}@else{{$Product->description}}@endif</textarea>
+                                    <textarea id="description" name="description" class="form-control" rows="3" placeholder="Description">@if(old('description')){{old('description')}}@else{{$Product->description}}@endif</textarea>
                                     <span class="help-block">{{$errors->first('description')}}</span>
                                 </div>
 

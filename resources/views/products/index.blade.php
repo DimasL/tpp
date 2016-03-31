@@ -44,14 +44,16 @@
                                 <h3 id="product-title">
                                     {{$Product->title}}
                                 </h3>
-
-                                <p><b>Category</b>: <a href="{{url('categories/view/' . $Product->category_id)}}">{{$Product->getCategoryTitle()}}</a></p>
-
+                                @if($Product->category)
+                                    <p><b>Category</b>: <a href="{{$Product->category->getUrl()}}">{{$Product->category->title}}</a></p>
+                                @endif
                                 <p><b>SKU</b>: {{$Product->sku}}</p>
 
                                 <p><b>Price</b>: ${{$Product->price}}</p>
 
                                 <p><b>Description</b>: {{$Product->description}}</p>
+
+                                <p><b>Quantity</b>: {{$Product->quantity}}</p>
                             </div>
                         </div>
                         <div class="row top-buffer">
@@ -68,12 +70,12 @@
                                                 class="fa fa-share-alt"></span> Subscribe
                                     </a>
                                 @endif
-                                <button type="button" class="btn btn-default btn-success"><span
+                                <!--<button type="button" class="btn btn-default btn-success"><span
                                             class="fa fa-plus"></span> Add to Cart
                                 </button>
                                 <button type="button" class="btn btn-default btn-info"><span
                                             class="fa fa-shopping-cart"></span> Checkout
-                                </button>
+                                </button>-->
                             </div>
                         </div>
                     </div>

@@ -54,6 +54,11 @@ class Category extends Model
             ->with('Category', $Category);
     }
 
+    public function getUrl()
+    {
+        return url('categories/view/' . $this->id);
+    }
+
     public function map()
     {
         return Schema::getColumnListing('categories');

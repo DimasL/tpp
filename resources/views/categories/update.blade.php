@@ -21,7 +21,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{url('categories/view/' . $Category->id)}}" title="View">
+                                        <a href="{{$Category->getUrl()}}" title="View">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                     </li>
