@@ -7,37 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class UsersSubscriptions extends Model
 {
     /**
-     * Define the table
+     * The database table used by the model
+     *
      * @var string
      */
     protected $table = 'users_subscriptions';
 
     /**
-     * Guarded fields
+     * The attributes that are not assignable
+     *
      * @var array
      */
     protected $guarded = ['id', 'created_at'];
 
     /**
-     * many-to-many relationship method.
+     * Get UsersSubscriptions status
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return bool
      */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * many-to-many relationship method.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function subscription()
-    {
-        return $this->belongsTo(Subscription::class);
-    }
-
     public function status()
     {
         if ($this->item_type !== 'timeline' || $this->finish > date('Y-m-d H:i:s')) {
@@ -46,13 +33,18 @@ class UsersSubscriptions extends Model
             $Subscriptions = self::where('subscription_id', $this->subscription_id)->get();
             foreach($Subscriptions as $Subscription) {
                 if ($Subscription->finish > date('Y-m-d H:i:s')) {
-                    return 'status';
+                    return true;
                 }
             }
         }*/
         return false;
     }
 
+    /**
+     * Get UsersSubscriptions status title
+     *
+     * @return string
+     */
     public function getStatusTitle()
     {
         if ($this->status()) {
@@ -61,6 +53,11 @@ class UsersSubscriptions extends Model
         return 'inactive';
     }
 
+    /**
+     * Get Subscription item
+     *
+     * @return mixed
+     */
     public function getSubscriptionItem()
     {
         switch ($this->item_type) {
@@ -71,11 +68,34 @@ class UsersSubscriptions extends Model
                 return Product::find($this->item_id);
                 break;
             default:
+                return null;
                 break;
         }
     }
 
     /**
+     * One-To-One Relationship Method for accessing the UsersSubscriptions->user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * One-To-One Relationship Method for accessing the UsersSubscriptions->subscription
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class);
+    }
+
+    /**
+     * Get schema columns
+     *
      * @return mixed
      */
     public function map()

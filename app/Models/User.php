@@ -34,47 +34,12 @@ class User extends Authenticatable
     ];
 
     /**
-     * Many-To-Many Relationship Method for accessing the User->roles
-     *
-     * @return QueryBuilder Object
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function logs()
-    {
-        return $this->hasMany(Log::class);
-    }
-
-    /**
-     * many-to-many relationship method
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function usersSubscriptions()
-    {
-        return $this->hasMany(UsersSubscriptions::class);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function map()
-    {
-        return Schema::getColumnListing('users');
-    }
-
-    /**
      * Check for subscription
+     *
      * @param $id
      * @return bool
      */
-    public function subscribed($item_type, $id)
+    public function isSubscribed($item_type, $id)
     {
         switch ($item_type) {
             case 'timeline':
@@ -98,6 +63,12 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * Check for expired of subscription
+     *
+     * @param $id
+     * @return bool
+     */
     public function isSubsribeEnd($id)
     {
         $usersSubscriptions = $this->usersSubscriptions()
@@ -112,6 +83,8 @@ class User extends Authenticatable
     }
 
     /**
+     * Check for permissions
+     *
      * @param $permission
      * @return bool
      */
@@ -123,5 +96,45 @@ class User extends Authenticatable
             return array_pluck($permission['permissions'], 'slug');
         }, $permissions))));
         return (bool)count(array_intersect($permissions, $permission));
+    }
+
+    /**
+     * Many-To-Many Relationship Method for accessing the User->roles
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * One-To-Many Relationship Method for accessing the User->logs
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany(Log::class);
+    }
+
+    /**
+     * One-To-Many Relationship Method for accessing the User->usersSubscriptions
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function usersSubscriptions()
+    {
+        return $this->hasMany(UsersSubscriptions::class);
+    }
+
+    /**
+     * Get schema columns
+     *
+     * @return array
+     */
+    public function map()
+    {
+        return Schema::getColumnListing('users');
     }
 }

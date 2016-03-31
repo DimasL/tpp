@@ -7,14 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
 
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
     protected $table = 'permissions';
 
+    /**
+     * The attributes that are not assignable.
+     *
+     * @var array
+     */
     protected $guarded = ['id', 'created_at'];
 
     /**
-     * many-to-many relationship method
+     * Many-To-Many Relationship Method for accessing the Permission->roles
      *
-     * @return QueryBuilder
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()
     {

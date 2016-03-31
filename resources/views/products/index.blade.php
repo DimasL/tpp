@@ -61,7 +61,7 @@
                                 <p class="text-muted">Viewed: {{ $Product->getViewed() }}</p>
                             </div>
                             <div class="btn-group pull-right" role="group" style="margin:10px;">
-                                @if(Auth::user()->subscribed('products', $Product->id))
+                                @if(Auth::user()->isSubscribed('products', $Product->id))
                                     <a href="{{ url('products/unsubscribe/' . $Product->id) }}" class="btn btn-default btn-alert"><span
                                                 class="fa fa-minus-circle"></span> Unsubscribe
                                     </a>

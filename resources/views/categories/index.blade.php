@@ -52,7 +52,7 @@
                                 <p class="text-muted">Products count: {{ $Category->getProductsCount() }}</p>
                             </div>
                             <div class="btn-group pull-right" role="group" style="margin:10px;">
-                                @if(Auth::user()->subscribed('categories', $Category->id))
+                                @if(Auth::user()->isSubscribed('categories', $Category->id))
                                     <a href="{{ url('categories/unsubscribe/' . $Category->id) }}" class="btn btn-default btn-alert"><span
                                                 class="fa fa-minus-circle"></span> Unsubscribe
                                     </a>
