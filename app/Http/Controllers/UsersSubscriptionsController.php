@@ -34,7 +34,7 @@ class UsersSubscriptionsController extends Controller
     {
         $UsersSubscriptions = Auth::user()
             ->usersSubscriptions()
-            ->get();
+            ->paginate();
         return view('mysubscriptions.list')
             ->with(['UsersSubscriptions' => $UsersSubscriptions]);
     }

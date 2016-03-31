@@ -58,6 +58,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="text-center">
+                                {!! $Subscriptions->render() !!}
+                            </div>
                         @else
                             <p>No subscriptions.</p>
                         @endif

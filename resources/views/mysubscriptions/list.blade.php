@@ -38,16 +38,16 @@
                                     <td class="text-right"></td>
                                 </thead>
                                 <tbody>
-                                    @foreach($UsersSubscriptions as $key => $Subscription)
+                                    @foreach($UsersSubscriptions as $key => $UsersSubscription)
                                         <tr>
                                             <td class="text-center">{{$key}}</td>
-                                            <td class="text-center">{{$Subscription->item_type}}</td>
-                                            <td class="text-center">{{$Subscription->start}}</td>
-                                            <td class="text-center">{{$Subscription->finish}}</td>
-                                            <td class="text-center">{{$Subscription->getStatusTitle()}}</td>
-                                            <td class="text-center">{{$Subscription->created_at}}</td>
+                                            <td class="text-center">{{$UsersSubscription->item_type}}</td>
+                                            <td class="text-center">{{$UsersSubscription->start}}</td>
+                                            <td class="text-center">{{$UsersSubscription->finish}}</td>
+                                            <td class="text-center">{{$UsersSubscription->getStatusTitle()}}</td>
+                                            <td class="text-center">{{$UsersSubscription->created_at}}</td>
                                             <td class="text-right">
-                                                <a href="{{url('mysubscriptions/view/' . $Subscription->id)}}" title="More info">
+                                                <a href="{{url('mysubscriptions/view/' . $UsersSubscription->id)}}" title="More info">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </td>
@@ -55,6 +55,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="text-center">
+                                {!! $UsersSubscriptions->render() !!}
+                            </div>
                         @else
                             <p>No subscriptions.</p>
                         @endif

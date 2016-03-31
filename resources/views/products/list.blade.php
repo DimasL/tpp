@@ -64,6 +64,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="text-center">
+                                {!! $Products->render() !!}
+                            </div>
                         @else
                             <p>No products.</p>
                         @endif

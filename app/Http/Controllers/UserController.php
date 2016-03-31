@@ -124,7 +124,7 @@ class UserController extends Controller
     public function userList()
     {
         return view('users.list')
-            ->with(['Users' => User::all()]);
+            ->with(['Users' => User::paginate()]);
     }
 
     /**

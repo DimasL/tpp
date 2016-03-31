@@ -145,7 +145,7 @@ class ProductController extends Controller
     public function productList()
     {
         return view('products.list')
-            ->with(['Products' => Product::all()]);
+            ->with(['Products' => Product::paginate()]);
     }
 
     /**
@@ -236,7 +236,7 @@ class ProductController extends Controller
     public function productListByCategory($category_id)
     {
         $Products = Product::where('category_id', $category_id)
-            ->get();
+            ->paginate();
         $Category = Category::find($category_id);
         return view('products.list')
             ->with(['Products' => $Products, 'Category' => $Category]);

@@ -16,7 +16,6 @@ class LogController extends Controller
     public function logList()
     {
         $Logs = Log::paginate();
-        $Logs->render();
         return view('logs.list')
             ->with(['Logs' => $Logs]);
     }

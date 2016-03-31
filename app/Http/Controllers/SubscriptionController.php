@@ -142,7 +142,7 @@ class SubscriptionController extends Controller
     public function subscriptionList()
     {
         return view('subscriptions.list')
-            ->with(['Subscriptions' => Subscription::all()]);
+            ->with(['Subscriptions' => Subscription::paginate()]);
     }
 
     /**

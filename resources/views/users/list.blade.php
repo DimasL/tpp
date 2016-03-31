@@ -60,6 +60,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="text-center">
+                                {!! $Users->render() !!}
+                            </div>
                         @else
                             <p>No users</p>
                         @endif
