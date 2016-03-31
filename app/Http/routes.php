@@ -33,8 +33,6 @@ Route::group(['middleware' => 'web'], function () {
         return view('welcome');
     });
 
-    Route::get('/dashboard', 'HomeController@index');
-
     Route::group(['prefix' => 'logs', 'middleware' => ['role:admin', 'acl:read']], function () {
 
         Route::get('/', [

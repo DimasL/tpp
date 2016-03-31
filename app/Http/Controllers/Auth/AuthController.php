@@ -28,7 +28,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard';
+    protected $redirectTo = '/';
 
     /**
      * Create a new authentication controller instance.
@@ -63,10 +63,13 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $User = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+        $User->roles()->sync([2]);
+        $User->save();
+        return $User;
     }
 }

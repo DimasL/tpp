@@ -20,7 +20,6 @@
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
                 @if(Auth::check())
-                    <li class="@yield('dashboard_active')"><a href="{{ url('dashboard') }}">Dashboard</a></li>
                     <li class="@yield('users_active')"><a href="{{ url('users') }}">Users</a></li>
                     <li class="@yield('categories_active')"><a href="{{ url('categories') }}">Categories</a></li>
                     <li class="@yield('products_active')"><a href="{{ url('products') }}">Products</a></li>
