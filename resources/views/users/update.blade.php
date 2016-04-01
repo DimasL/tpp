@@ -17,13 +17,19 @@
                                 <ul class="list-inline top-buttons-ul">
                                     <li>
                                         <a href="{{url('users')}}" title="List">
-                                            <i class="fa fa-arrow-left"></i>
+                                            <i class="fa fa-list"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{url('users/view/' . $User->id)}}" title="View">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
+                                        @if($User->id == Auth::user()->id)
+                                            <a href="{{url('profile')}}" title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        @else
+                                            <a href="{{url('users/view/' . $User->id)}}" title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        @endif
                                     </li>
                                 </ul>
                             </div>
@@ -31,7 +37,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="{{url('users/update/' . $User->id)}}" method="post" enctype="multipart/form-data">
+                        <form action="@if($User->id == Auth::user()->id){{url('profile/update')}}@else{{url('users/update/' . $User->id)}}@endif" method="post" enctype="multipart/form-data">
                             {{csrf_field()}}
                             <input name="noImage" type='hidden' id="noImage" />
                             <!-- User Info-->
@@ -59,15 +65,17 @@
                                     <span class="help-block">{{$errors->first('email')}}</span>
                                 </div>
 
-                                <div class="form-group @if($errors->first('roles'))has-error @endif">
-                                    <label class="control-label" for="emailInput">Role*</label>
-                                    <select class="form-control" name="role">
-                                        @foreach($Roles as $role)
-                                            <option @if($role->id == $User->roles->first()->id) selected @endif value="{{$role->id}}">{{$role->title}}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="help-block">{{$errors->first('roles')}}</span>
-                                </div>
+                                @if(in_array('admin', Auth::user()->roles()->lists('slug')->toArray()))
+                                    <div class="form-group @if($errors->first('roles'))has-error @endif">
+                                        <label class="control-label" for="emailInput">Role*</label>
+                                        <select class="form-control" name="role">
+                                            @foreach($Roles as $role)
+                                                <option @if($role->id == $User->roles->first()->id) selected @endif value="{{$role->id}}">{{$role->title}}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="help-block">{{$errors->first('roles')}}</span>
+                                    </div>
+                                @endif
 
                                 <div class="btn-group pull-right" role="group" style="margin-bottom:10px;margin-top:10px;">
                                     <button type="submit" class="btn btn-default btn-success"><span class="fa fa-check"></span> Update</button>

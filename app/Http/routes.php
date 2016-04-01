@@ -232,4 +232,35 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
+    Route::group(['prefix' => 'profile', 'middleware' => ['acl:read']], function () {
+
+        Route::get('/', [
+            'uses' => 'UserController@profile'
+        ]);
+
+        Route::any('/update', [
+            'uses' => 'UserController@updateProfile'
+        ]);
+
+        Route::group(['before' => 'csrf'], function () {
+
+            Route::any('create', [
+                'middleware' => ['acl:create'],
+                'uses' => 'UserController@create'
+            ]);
+
+            Route::any('update/{id}', [
+                'middleware' => ['acl:update'],
+                'uses' => 'UserController@update'
+            ]);
+
+            /*Route::post('delete/{id}', [
+                'middleware' => ['acl:delete'],
+                'uses' => 'UserController@delete'
+            ]);*/
+
+        });
+
+    });
+
 });

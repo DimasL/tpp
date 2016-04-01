@@ -47,6 +47,23 @@ class UserController extends Controller
     }
 
     /**
+     * Show User Info view
+     *
+     * @return $this
+     */
+    public function profile()
+    {
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Show user info by id="' . Auth::user()->id . '"',
+            'type' => 'read',
+            'status' => 'success',
+        ]);
+        return view('users.index')
+            ->with(['User' => Auth::user()]);
+    }
+
+    /**
      * Create user action
      *
      * @param Request $request
@@ -92,11 +109,40 @@ class UserController extends Controller
                     ->withErrors($result['validator']);
             }
 
-            return redirect('users')
+            return redirect('users/view/' . $User->id)
                 ->with('success_message', 'User has been updated.');
         }
         return view('users.update')
             ->with(['User' => $User, 'Roles' => $Roles]);
+    }
+
+    /**
+     * Update Profile action
+     *
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function updateProfile(Request $request)
+    {
+        $User = Auth::user();
+        if(!$User) {
+            abort(404);
+        }
+        if ($request->isMethod('post') && $User) {
+            $result = $this->saveUser($request, $User);
+
+            if(!$result['status']) {
+                return redirect('profile/update')
+                    ->with(['User' => $User])
+                    ->withInput()
+                    ->withErrors($result['validator']);
+            }
+
+            return redirect('profile')
+                ->with('success_message', 'Profile has been updated.');
+        }
+        return view('users.update')
+            ->with(['User' => $User]);
     }
 
     /**

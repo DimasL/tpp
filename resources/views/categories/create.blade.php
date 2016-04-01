@@ -17,7 +17,7 @@
                                 <ul class="list-inline top-buttons-ul">
                                     <li>
                                         <a href="{{url('categories')}}" title="List">
-                                            <i class="fa fa-arrow-left"></i>
+                                            <i class="fa fa-list"></i>
                                         </a>
                                     </li>
                                 </ul>

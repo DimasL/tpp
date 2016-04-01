@@ -17,12 +17,18 @@
                                 <ul class="list-inline top-buttons-ul">
                                     <li>
                                         <a href="{{url('users')}}" title="List">
-                                            <i class="fa fa-arrow-left"></i>
+                                            <i class="fa fa-list"></i>
                                         </a>
                                     </li>
                                     @if(in_array('admin', Auth::user()->roles()->lists('slug')->toArray()))
                                         <li>
                                             <a href="{{url('users/update/' . $User->id)}}" title="Update">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </li>
+                                    @elseif($User->id == Auth::user()->id)
+                                        <li>
+                                            <a href="{{url('profile/update')}}" title="Update">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>
                                         </li>

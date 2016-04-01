@@ -50,7 +50,7 @@
                                                 <a href="{{url('users/view/' . $User->id)}}" title="More info">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                @if(Auth::user()->isUserCan('update'))
+                                                @if(Auth::user()->isUserCan('update') || Auth::user()->id == $User->id)
                                                     <a href="{{url('users/update/' . $User->id)}}" title="Edit">
                                                         <i class="fa fa-pencil-square-o"></i>
                                                     </a>
