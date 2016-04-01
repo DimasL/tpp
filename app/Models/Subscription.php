@@ -24,11 +24,11 @@ class Subscription extends Model
     protected $guarded = ['id', 'created_at'];
 
     /**
-     * Check for Subscription expired (delay for 86400 sec / 1 day) with 50% chance
+     * Check for Subscription expired (delay for 86400 sec / 1 day) with < 1% chance
      */
     static function remindCheck()
     {
-        if(rand(0,1)) {
+        if(mt_rand(0, 100) === 0) {
             $subscriptionReminder = DB::select('select `time` from subscription_reminder LIMIT 1');
             if (!$subscriptionReminder) {
                 DB::insert('insert into subscription_reminder (time) values (?) ', [time()]);
