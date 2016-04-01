@@ -49,7 +49,7 @@
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 @if(Auth::user()->isUserCan('update'))
-                                                    <a href="{{url('subscriptions/update/' . $Subscription->id)}}" title="Edit">
+                                                    <a href="{{url('subscriptions/update/' . $Subscription->id)}}" title="Update">
                                                         <i class="fa fa-pencil-square-o"></i>
                                                     </a>
                                                 @endif
