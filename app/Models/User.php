@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -96,6 +97,32 @@ class User extends Authenticatable
             return array_pluck($permission['permissions'], 'slug');
         }, $permissions))));
         return (bool)count(array_intersect($permissions, $permission));
+    }
+
+    /**
+     * Get image action
+     *
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getImage()
+    {
+        if ($this->image && file_exists(public_path() . '/assets/images/users/' . $this->image)) {
+            return url('/assets/images/users/' . $this->image);
+        }
+        return url('/assets/images/users/default.png');
+    }
+
+    /**
+     * Delete image on deleting user
+     *
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        if ($this->image && file_exists(public_path() . '/assets/images/users/' . $this->image)) {
+            Storage::delete(public_path() . '/assets/images/users/' . $this->image);
+        }
+        parent::delete();
     }
 
     /**

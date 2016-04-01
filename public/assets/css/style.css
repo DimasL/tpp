@@ -31,3 +31,13 @@ div.categories-list:hover {
 ul.categories-list-main li {
     list-style-type: none;
 }
+
+ul.nav.navbar-nav.navbar-right .dropdown img {
+    height: 25px;
+    margin-right: 10px;
+    float: left;
+}
+
+ul.nav.navbar-nav.navbar-right li.dropdown.open ul.dropdown-menu {
+    min-width:100%;
+}

@@ -35,12 +35,12 @@
                     <div class="panel-body">
                         <!-- Category Info-->
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-4">
                                 <img @if(!$Category->image)style="display: none!important;"
-                                     @endif src="{{asset('assets/images/categories/' . $Category->image)}}"
+                                     @endif src="{{$Category->getImage()}}"
                                      class="img-responsive product-image-large">
                             </div>
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-8">
                                 <h3 id="product-title">
                                     {{$Category->title}}
                                 </h3>
@@ -53,15 +53,18 @@
                             </div>
                             <div class="btn-group pull-right" role="group" style="margin:10px;">
                                 @if(Auth::user()->isSubscribed('categories', $Category->id))
-                                    <a href="{{ url('categories/unsubscribe/' . $Category->id) }}" class="btn btn-default btn-alert"><span
+                                    <a href="{{ url('categories/unsubscribe/' . $Category->id) }}"
+                                       class="btn btn-default btn-alert"><span
                                                 class="fa fa-minus-circle"></span> Unsubscribe
                                     </a>
                                 @else
-                                    <a href="{{ url('categories/subscribe/' . $Category->id) }}" class="btn btn-default btn-success"><span
+                                    <a href="{{ url('categories/subscribe/' . $Category->id) }}"
+                                       class="btn btn-default btn-success"><span
                                                 class="fa fa-share-alt"></span> Subscribe
                                     </a>
                                 @endif
-                                <a href="{{ url('products/category/' . $Category->id) }}" class="btn btn-default btn-info"><span
+                                <a href="{{ url('products/category/' . $Category->id) }}"
+                                   class="btn btn-default btn-info"><span
                                             class="fa fa-search"></span> Show Products
                                 </a>
                             </div>

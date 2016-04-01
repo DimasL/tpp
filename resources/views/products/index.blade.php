@@ -35,12 +35,11 @@
                     <div class="panel-body">
                         <!-- Product Info-->
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6">
-                                <img @if(!$Product->image)style="display: none!important;"
-                                     @endif src="{{asset('assets/images/products/' . $Product->image)}}"
+                            <div class="col-xs-12 col-sm-4">
+                                <img src="{{$Product->getImage()}}"
                                      class="img-responsive product-image-large">
                             </div>
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-8">
                                 <h3 id="product-title">
                                     {{$Product->title}}
                                 </h3>

@@ -34,10 +34,10 @@
 
                     <div class="panel-body">
                         <!-- User Info-->
-                        <div class="col-xs-12 col-sm-6">
-                            <img @if(!$User->image)style="display: none!important;" @endif src="{{asset('assets/images/users/' . $User->image)}}" class="img-responsive img-thumbnail product-image-large">
+                        <div class="col-xs-12 col-sm-4">
+                            <img class="img-thumbnail product-image-large img-responsive" src="{{$User->getImage()}}" alt="avatar">
                         </div>
-                        <div class="col-xs-12 col-sm-6">
+                        <div class="col-xs-12 col-sm-8">
                             <h3 id="product-title">
                                 {{$User->name}}
                             </h3>

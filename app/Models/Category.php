@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class Category extends Model
 {
@@ -52,6 +53,32 @@ class Category extends Model
     public function getUrl()
     {
         return url('categories/view/' . $this->id);
+    }
+
+    /**
+     * Get image action
+     *
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getImage()
+    {
+        if ($this->image && file_exists(public_path() . '/assets/images/categories/' . $this->image)) {
+            return url('/assets/images/categories/' . $this->image);
+        }
+        return url('/assets/images/categories/default.png');
+    }
+
+    /**
+     * Delete image on deleting category
+     *
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        if ($this->image && file_exists(public_path() . '/assets/images/categories/' . $this->image)) {
+            Storage::delete(public_path() . '/assets/images/categories/' . $this->image);
+        }
+        parent::delete();
     }
 
     /**

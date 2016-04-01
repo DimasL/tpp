@@ -41,6 +41,7 @@
                 @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <img class="img-responsive img-circle" src="{{Auth::user()->getImage()}}" alt="avatar">
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
 

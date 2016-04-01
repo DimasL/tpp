@@ -35,7 +35,7 @@
                             {{csrf_field()}}
                             <input name="noImage" type='hidden' id="noImage" />
                             <!-- Product Info-->
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-4">
                                 <div class="form-group @if($errors->first('image'))has-error @endif">
                                     <input name="image" type='file' id="imgInp" />
                                     <div @if(!$Product->image)style="display: none!important;" @endif>
@@ -45,7 +45,7 @@
                                     <span class="help-block">{{$errors->first('image')}}</span>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-8">
 
                                 <div class="form-group @if($errors->first('title'))has-error @endif">
                                     <label class="control-label" for="titleInput">Title*</label>
