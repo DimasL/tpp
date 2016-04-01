@@ -49,7 +49,7 @@
                         </div>
                         <div class="row top-buffer">
                             <div class="col-md-6 col-sm-6">
-                                <p class="text-muted">Products count: {{ $Category->getProductsCount() }}</p>
+                                <p class="text-muted">Products: {{ $Category->getProductsCount() }}</p>
                             </div>
                             <div class="btn-group pull-right" role="group" style="margin:10px;">
                                 @if(Auth::user()->isSubscribed('categories', $Category->id))
