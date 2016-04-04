@@ -30,6 +30,6 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             Subscription::remind();
-        })->everyMinute();
+        })->daily();
     }
 }
