@@ -33,6 +33,7 @@ class Subscription extends Model
     {
         $UsersSubscriptions = UsersSubscriptions::where('item_type', 'subscriptions')
             ->where('status', 0)
+            ->where('finish', '<', date("Y-m-d H:i:s"))
             ->get();
 
         foreach ($UsersSubscriptions as $UsersSubscription) {
