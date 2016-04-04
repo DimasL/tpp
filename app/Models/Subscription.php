@@ -87,7 +87,8 @@ class Subscription extends Model
     public function delete()
     {
         $UsersSubscriptions = UsersSubscriptions::where('item_type', 'subscriptions')
-            ->where('item_id', $this->id)->get();
+            ->where('item_id', $this->id)
+            ->get();
         foreach ($UsersSubscriptions as $UsersSubscription) {
             try {
                 $UsersSubscription->delete();

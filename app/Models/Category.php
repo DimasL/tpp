@@ -69,7 +69,7 @@ class Category extends Model
     }
 
     /**
-     * Delete image on deleting category
+     * Delete image and subscriptions on deleting category
      *
      * @throws \Exception
      */
@@ -77,6 +77,16 @@ class Category extends Model
     {
         if ($this->image && file_exists(public_path() . '/assets/images/categories/' . $this->image)) {
             Storage::delete(public_path() . '/assets/images/categories/' . $this->image);
+        }
+        $UsersSubscriptions = UsersSubscriptions::where('item_type', 'categories')
+            ->where('item_id', $this->id)
+            ->get();
+        foreach ($UsersSubscriptions as $UsersSubscription) {
+            try {
+                $UsersSubscription->delete();
+            } catch (\Exception $e) {
+                return $e;
+            }
         }
         parent::delete();
     }
