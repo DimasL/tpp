@@ -86,10 +86,7 @@ class Subscription extends Model
      */
     public function delete()
     {
-        $UsersSubscriptions = UsersSubscriptions::where('item_type', 'subscriptions')
-            ->where('item_id', $this->id)
-            ->get();
-        foreach ($UsersSubscriptions as $UsersSubscription) {
+        foreach ($this->usersSubscriptions as $UsersSubscription) {
             try {
                 $UsersSubscription->delete();
             } catch (\Exception $e) {
@@ -106,7 +103,7 @@ class Subscription extends Model
      */
     public function usersSubscriptions()
     {
-        return $this->hasMany(UsersSubscriptions::class);
+        return $this->hasMany(UsersSubscriptions::class, 'item_id')->where('item_type', 'subscriptions');
     }
 
     /**

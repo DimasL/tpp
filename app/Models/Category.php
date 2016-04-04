@@ -78,10 +78,7 @@ class Category extends Model
         if ($this->image && file_exists(public_path() . '/assets/images/categories/' . $this->image)) {
             Storage::delete(public_path() . '/assets/images/categories/' . $this->image);
         }
-        $UsersSubscriptions = UsersSubscriptions::where('item_type', 'categories')
-            ->where('item_id', $this->id)
-            ->get();
-        foreach ($UsersSubscriptions as $UsersSubscription) {
+        foreach ($this->usersSubscriptions as $UsersSubscription) {
             try {
                 $UsersSubscription->delete();
             } catch (\Exception $e) {
@@ -89,6 +86,16 @@ class Category extends Model
             }
         }
         parent::delete();
+    }
+
+    /**
+     * One-To-Many Relationship Method for accessing the Subscription->usersSubscriptions
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function usersSubscriptions()
+    {
+        return $this->hasMany(UsersSubscriptions::class, 'item_id')->where('item_type', 'categories');
     }
 
     /**
