@@ -80,6 +80,25 @@ class Subscription extends Model
     }
 
     /**
+     * Delete UsersSubscriptions on deleting subscription
+     *
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        $UsersSubscriptions = UsersSubscriptions::where('item_type', 'subscriptions')
+            ->where('item_id', $this->id)->get();
+        foreach ($UsersSubscriptions as $UsersSubscription) {
+            try {
+                $UsersSubscription->delete();
+            } catch (\Exception $e) {
+                return $e;
+            }
+        }
+        parent::delete();
+    }
+
+    /**
      * One-To-Many Relationship Method for accessing the Subscription->usersSubscriptions
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

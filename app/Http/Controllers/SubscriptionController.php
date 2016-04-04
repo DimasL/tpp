@@ -126,7 +126,8 @@ class SubscriptionController extends Controller
     public function delete($id)
     {
         try {
-            Subscription::find($id)->delete();
+            $Subscription = Subscription::find($id);
+            $Subscription->delete();
         } catch (\Exception $e) {
             return $e;
         }
