@@ -79,7 +79,7 @@ class Product extends Model
     }
 
     /**
-     * One-To-Many Relationship Method for accessing the Subscription->usersSubscriptions
+     * One-To-Many Relationship Method for accessing the Product->usersSubscriptions
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

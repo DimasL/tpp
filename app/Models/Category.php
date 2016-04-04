@@ -89,7 +89,7 @@ class Category extends Model
     }
 
     /**
-     * One-To-Many Relationship Method for accessing the Subscription->usersSubscriptions
+     * One-To-Many Relationship Method for accessing the Category->usersSubscriptions
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
