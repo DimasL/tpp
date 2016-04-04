@@ -32,6 +32,7 @@ class Subscription extends Model
     static function remind()
     {
         $UsersSubscriptions = UsersSubscriptions::where('item_type', 'subscriptions')
+            ->where('item_type', 'subscriptions')
             ->where('status', 0)
             ->where('finish', '<', date("Y-m-d H:i:s"))
             ->get();
