@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 class UsersSubscriptions extends Model
 {
@@ -93,7 +94,7 @@ class UsersSubscriptions extends Model
      */
     public function subscription()
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->belongsTo(Subscription::class, 'item_id');
     }
 
     /**
