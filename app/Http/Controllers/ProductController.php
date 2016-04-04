@@ -37,14 +37,20 @@ class ProductController extends Controller
      */
     public function index($id)
     {
+        $User = Auth::user();
         $Product = Product::find($id);
         if (!$Product) {
+            Log::create([
+                'user_id' => $User->id,
+                'text' => 'Show product info by id="' . $id . '"',
+                'type' => 'read',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
-        $User = Auth::user();
         Log::create([
             'user_id' => $User->id,
-            'text' => 'Show pruduct info by id="' . $id . '"',
+            'text' => 'Show product info by id="' . $id . '"',
             'type' => 'read',
             'status' => 'success',
         ]);
@@ -83,6 +89,13 @@ class ProductController extends Controller
                     ->withErrors($result['validator']);
             }
 
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Create product, id="' . $result['Product']->id . '"',
+                'type' => 'create',
+                'status' => 'success',
+            ]);
+
             return redirect('products/view/' . $result['Product']->id)
                 ->with('success_message', 'Product has been created.');
         }
@@ -102,6 +115,12 @@ class ProductController extends Controller
     {
         $Product = Product::find($id);
         if (!$Product) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Update product, id="' . $id . '"',
+                'type' => 'update',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         if ($request->isMethod('post') && $Product) {
@@ -112,6 +131,12 @@ class ProductController extends Controller
                     ->withInput()
                     ->withErrors($result['validator']);
             }
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Update product, id="' . $id . '"',
+                'type' => 'update',
+                'status' => 'success',
+            ]);
             return redirect('products')
                 ->with('success_message', 'Product has been updated.');
         }
@@ -133,6 +158,12 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return $e;
         }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Delete product, id="' . $id . '"',
+            'type' => 'delete',
+            'status' => 'success',
+        ]);
         return redirect('products')
             ->with('success_message', 'Product has been deleted.');
     }

@@ -34,11 +34,17 @@ class SubscriptionController extends Controller
     {
         $Subscription = Subscription::find($id);
         if (!$Subscription) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Show subscription info by id="' . $id . '"',
+                'type' => 'read',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         Log::create([
             'user_id' => Auth::user()->id,
-            'text' => 'Show pruduct info by id="' . $id . '"',
+            'text' => 'Show subscription info by id="' . $id . '"',
             'type' => 'read',
             'status' => 'success',
         ]);
@@ -77,6 +83,12 @@ class SubscriptionController extends Controller
                     ->withErrors($result['validator']);
             }
 
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Create subscription, id="' . $result['Subscription']->id . '"',
+                'type' => 'create',
+                'status' => 'success',
+            ]);
             return redirect('subscriptions/view/' . $result['Subscription']->id)
                 ->with('success_message', 'Subscription has been created.');
         }
@@ -96,6 +108,12 @@ class SubscriptionController extends Controller
     {
         $Subscription = Subscription::find($id);
         if (!$Subscription) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Update subscription, id="' . $result['Subscription']->id . '"',
+                'type' => 'update',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
 
@@ -109,6 +127,12 @@ class SubscriptionController extends Controller
                     ->withErrors($result['validator']);
             }
 
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Update subscription, id="' . $result['Subscription']->id . '"',
+                'type' => 'update',
+                'status' => 'success',
+            ]);
             return redirect('subscriptions')
                 ->with('success_message', 'Subscription has been updated.');
         }
@@ -131,6 +155,12 @@ class SubscriptionController extends Controller
         } catch (\Exception $e) {
             return $e;
         }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Delete subscription, id="' . $id . '"',
+            'type' => 'delete',
+            'status' => 'success',
+        ]);
         return redirect('subscriptions')
             ->with('success_message', 'Subscription has been deleted.');
     }

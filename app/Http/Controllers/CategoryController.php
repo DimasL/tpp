@@ -35,11 +35,17 @@ class CategoryController extends Controller
     {
         $Category = Category::find($id);
         if (!$Category) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Show category info by id="' . $id . '"',
+                'type' => 'read',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         Log::create([
             'user_id' => Auth::user()->id,
-            'text' => 'Show pruduct info by id="' . $id . '"',
+            'text' => 'Show category info by id="' . $id . '"',
             'type' => 'read',
             'status' => 'success',
         ]);
@@ -78,6 +84,13 @@ class CategoryController extends Controller
                     ->withErrors($result['validator']);
             }
 
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Create category, id="' . $result['Category']->id . '"',
+                'type' => 'create',
+                'status' => 'success',
+            ]);
+
             return redirect('categories/view/' . $result['Category']->id)
                 ->with('success_message', 'Category has been created.');
         }
@@ -97,6 +110,12 @@ class CategoryController extends Controller
     {
         $Category = Category::find($id);
         if (!$Category) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Update category info by id="' . $id . '"',
+                'type' => 'update',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         if ($request->isMethod('post') && $Category) {
@@ -108,6 +127,13 @@ class CategoryController extends Controller
                     ->withInput()
                     ->withErrors($result['validator']);
             }
+
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Update category info by id="' . $id . '"',
+                'type' => 'update',
+                'status' => 'success',
+            ]);
 
             return redirect('categories')
                 ->with('success_message', 'Category has been updated.');
@@ -167,6 +193,12 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             return $e;
         }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Delete category by id="' . $id . '"',
+            'type' => 'delete',
+            'status' => 'success',
+        ]);
         return redirect('categories')
             ->with('success_message', 'Category has been deleted.');
     }

@@ -34,6 +34,12 @@ class UserController extends Controller
     {
         $User = User::find($id);
         if(!$User) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Show user info by id="' . $id . '"',
+                'type' => 'read',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         Log::create([
@@ -55,7 +61,7 @@ class UserController extends Controller
     {
         Log::create([
             'user_id' => Auth::user()->id,
-            'text' => 'Show user info by id="' . Auth::user()->id . '"',
+            'text' => 'Show user profile',
             'type' => 'read',
             'status' => 'success',
         ]);
@@ -79,6 +85,12 @@ class UserController extends Controller
                     ->withInput()
                     ->withErrors($result['validator']);
             }
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Create user',
+                'type' => 'create',
+                'status' => 'success',
+            ]);
             return redirect('users/view/' . $result['User']->id)
                 ->with('success_message', 'User has been created.');
         }
@@ -96,6 +108,12 @@ class UserController extends Controller
     {
         $User = User::find($id);
         if(!$User) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Update user info by id="' . $id . '"',
+                'type' => 'update',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         $Roles = Role::all();
@@ -108,7 +126,12 @@ class UserController extends Controller
                     ->withInput()
                     ->withErrors($result['validator']);
             }
-
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Update user info by id="' . $id . '"',
+                'type' => 'update',
+                'status' => 'success',
+            ]);
             return redirect('users/view/' . $User->id)
                 ->with('success_message', 'User has been updated.');
         }
@@ -137,7 +160,12 @@ class UserController extends Controller
                     ->withInput()
                     ->withErrors($result['validator']);
             }
-
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Profile update',
+                'type' => 'update',
+                'status' => 'success',
+            ]);
             return redirect('profile')
                 ->with('success_message', 'Profile has been updated.');
         }
@@ -158,6 +186,12 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return $e;
         }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Delete user by id="' . $id . '"',
+            'type' => 'delete',
+            'status' => 'success',
+        ]);
         return redirect('users')
             ->with('success_message', 'User has been deleted.');
     }

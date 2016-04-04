@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Log;
 use App\Models\Product;
 use App\Models\Subscription;
 use App\Models\UsersSubscriptions;
@@ -21,6 +22,21 @@ class UsersSubscriptionsController extends Controller
     public function index($id)
     {
         $UsersSubscription = UsersSubscriptions::find($id);
+        if(!$UsersSubscription) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Show users subscription by id="' . $id . '"',
+                'type' => 'read',
+                'status' => 'failed',
+            ]);
+            abort(404);
+        }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Show users subscription by id="' . $id . '"',
+            'type' => 'read',
+            'status' => 'success',
+        ]);
         return view('mysubscriptions.index')
             ->with(['UsersSubscription' => $UsersSubscription]);
     }
@@ -49,12 +65,24 @@ class UsersSubscriptionsController extends Controller
     {
         $Category = Category::find($id);
         if (!$Category) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Create users subscription by id="' . $id . '"',
+                'type' => 'create',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         UsersSubscriptions::create([
             'user_id' => Auth::user()->id,
             'item_type' => 'categories',
             'item_id' => $id,
+        ]);
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Create users subscription by id="' . $id . '"',
+            'type' => 'create',
+            'status' => 'success',
         ]);
         return back();
     }
@@ -71,6 +99,12 @@ class UsersSubscriptionsController extends Controller
             ->where('item_type', 'categories')
             ->where('item_id', $id)->get();
         if (!$UsersSubscriptions) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Unsubscribe from users subscription by id="' . $id . '"',
+                'type' => 'delete',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         foreach ($UsersSubscriptions as $UsersSubscription) {
@@ -80,6 +114,12 @@ class UsersSubscriptionsController extends Controller
                 return $e;
             }
         }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Unsubscribe from users subscription by id="' . $id . '"',
+            'type' => 'delete',
+            'status' => 'success',
+        ]);
         return back();
     }
 
@@ -93,12 +133,25 @@ class UsersSubscriptionsController extends Controller
     {
         $Product = Product::find($id);
         if (!$Product) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Create users subscription by id="' . $id . '"',
+                'type' => 'create',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         UsersSubscriptions::create([
             'user_id' => Auth::user()->id,
             'item_type' => 'products',
             'item_id' => $id,
+        ]);
+
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Create users subscription by id="' . $id . '"',
+            'type' => 'create',
+            'status' => 'success',
         ]);
         return back();
     }
@@ -115,6 +168,13 @@ class UsersSubscriptionsController extends Controller
             ->where('item_type', 'products')
             ->where('item_id', $id)->get();
         if (!$UsersSubscriptions) {
+
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Unsubscribe from users subscription by id="' . $id . '"',
+                'type' => 'delete',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         foreach ($UsersSubscriptions as $UsersSubscription) {
@@ -124,6 +184,12 @@ class UsersSubscriptionsController extends Controller
                 return $e;
             }
         }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Unsubscribe from users subscription by id="' . $id . '"',
+            'type' => 'delete',
+            'status' => 'success',
+        ]);
         return back();
     }
 
@@ -137,6 +203,12 @@ class UsersSubscriptionsController extends Controller
     {
         $Subscription = Subscription::find($id);
         if (!$Subscription) {
+            Log::create([
+                'user_id' => Auth::user()->id,
+                'text' => 'Create users subscription by id="' . $id . '"',
+                'type' => 'create',
+                'status' => 'failed',
+            ]);
             abort(404);
         }
         $currentTime = time();
@@ -146,6 +218,13 @@ class UsersSubscriptionsController extends Controller
             'item_id' => $id,
             'start' => date('Y-m-d H:i:s', $currentTime),
             'finish' => date('Y-m-d H:i:s', $currentTime + $Subscription->duration * 86400)
+        ]);
+
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Create from users subscription by id="' . $id . '"',
+            'type' => 'create',
+            'status' => 'success',
         ]);
         return redirect('mysubscriptions/view/' . $UsersSubscription->id);
     }
@@ -164,6 +243,12 @@ class UsersSubscriptionsController extends Controller
         } catch (\Exception $e) {
             return $e;
         }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Unsubscribe from users subscription by id="' . $id . '"',
+            'type' => 'delete',
+            'status' => 'success',
+        ]);
         return redirect('mysubscriptions');
     }
 
@@ -181,6 +266,12 @@ class UsersSubscriptionsController extends Controller
         } catch (\Exception $e) {
             return $e;
         }
+        Log::create([
+            'user_id' => Auth::user()->id,
+            'text' => 'Create from users subscription by id="' . $id . '"',
+            'type' => 'create',
+            'status' => 'success',
+        ]);
         return redirect('mysubscriptions');
     }
 }
