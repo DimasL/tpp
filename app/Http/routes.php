@@ -33,6 +33,10 @@ Route::group(['middleware' => 'web'], function () {
         return view('welcome');
     });
 
+    Route::get('/search', [
+        'uses' => 'SearchController@search'
+    ]);
+
     Route::group(['prefix' => 'logs', 'middleware' => ['role:admin', 'acl:read']], function () {
 
         Route::get('/', [

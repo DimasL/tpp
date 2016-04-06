@@ -3,7 +3,8 @@
         <div class="navbar-header">
 
             <!-- Collapsed Hamburger -->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#app-navbar-collapse">
                 <span class="sr-only">Toggle Navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -23,8 +24,10 @@
                 <li class="@yield('products_active')"><a href="{{ url('products') }}">Products</a></li>
                 @if(Auth::check())
                     <li class="@yield('users_active')"><a href="{{ url('users') }}">Users</a></li>
-                    <li class="@yield('mysubscriptions_active')"><a href="{{ url('mysubscriptions') }}">My Subscriptions</a></li>
-                    <li class="@yield('subscriptions_active')"><a href="{{ url('subscriptions') }}">Subscriptions</a></li>
+                    <li class="@yield('mysubscriptions_active')"><a href="{{ url('mysubscriptions') }}">My
+                            Subscriptions</a></li>
+                    <li class="@yield('subscriptions_active')"><a href="{{ url('subscriptions') }}">Subscriptions</a>
+                    </li>
                     @if(in_array('admin', Auth::user()->roles()->lists('slug')->toArray()))
                         <li class="@yield('logs_active')"><a href="{{ url('logs') }}">Logs</a></li>
                     @endif
@@ -52,6 +55,19 @@
                     </li>
                 @endif
             </ul>
+
+            <div class="col-sm-3 col-md-3 pull-right">
+                <form class="navbar-form" role="search" action="{{url('search')}}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="srch" id="srch">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </nav>
