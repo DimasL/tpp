@@ -207,7 +207,7 @@ class ProductController extends Controller
             foreach ($UsersSubscriptions as $UsersSubscription) {
                 $emails[] = $UsersSubscription->user->email;
             }
-            Mail::send('emails.newproductincategory', ['Product' => $Product, 'Category' => $Category], function ($message) use ($emails) {
+            Mail::send('emails.newproductincategory', ['Product' => $Product, 'Category' => $Category], function ($message) use ($emails, $Product) {
                 $message->to($emails)->subject('New product!');
             });
         }

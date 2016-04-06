@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public $rules = [
         'name' => 'required',
-        'email' => 'required|email',
+        'email' => 'required|email|unique:users',
         'image' => 'image'
     ];
 

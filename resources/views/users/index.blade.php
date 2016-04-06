@@ -44,9 +44,7 @@
                             <img class="img-thumbnail product-image-large img-responsive" src="{{$User->getImage()}}" alt="avatar">
                         </div>
                         <div class="col-xs-12 col-sm-8">
-                            <h3 id="product-title">
-                                {{$User->name}}
-                            </h3>
+                            <h3 id="product-title">{{$User->name}}</h3>
                             <p><b>Email</b>: {{$User->email}}</p>
                             <p><b>User role</b>: {{$User->roles->first()['title']}}</p>
                         </div>
