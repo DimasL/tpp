@@ -8,7 +8,7 @@
                 <a href="{{$Category->getUrl()}}" title="More info">
                     <i class="fa fa-eye"></i>
                 </a>
-                @if(Auth::user()->isUserCan('update'))
+                @if(Auth::check() && Auth::user()->isUserCan('update'))
                     <a href="{{url('categories/update/' . $Category->id)}}" title="Update">
                         <i class="fa fa-pencil-square-o"></i>
                     </a>

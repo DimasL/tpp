@@ -15,7 +15,7 @@
                             <div class="col-md-3"></div>
                             <div class="col-md-3 text-right">
                                 <ul class="list-inline top-buttons-ul">
-                                    @if(Auth::user()->isUserCan('create'))
+                                    @if(Auth::check() && Auth::user()->isUserCan('create'))
                                         <li>
                                             <a href="{{url('products/create')}}" title="Add Product">
                                                 <i class="fa fa-plus"></i> Add
@@ -54,7 +54,7 @@
                                                 <a href="{{$Product->getUrl()}}" title="More info">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                @if(Auth::user()->isUserCan('update'))
+                                                @if(Auth::check() && Auth::user()->isUserCan('update'))
                                                     <a href="{{url('products/update/' . $Product->id)}}" title="Update">
                                                         <i class="fa fa-pencil-square-o"></i>
                                                     </a>

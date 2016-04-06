@@ -37,32 +37,23 @@ class ProductController extends Controller
      */
     public function index($id)
     {
-        $User = Auth::user();
+        $User_id = 0;
+        if (Auth::check()) {
+            $User_id = Auth::user()->id;
+        }
         $Product = Product::find($id);
         if (!$Product) {
-            Log::create([
-                'user_id' => $User->id,
-                'text' => 'Show product info by id="' . $id . '"',
-                'type' => 'read',
-                'status' => 'failed',
-            ]);
             abort(404);
         }
-        Log::create([
-            'user_id' => $User->id,
-            'text' => 'Show product info by id="' . $id . '"',
-            'type' => 'read',
-            'status' => 'success',
-        ]);
         $Statistics = Statistics::orderBy('created_at', 'desc')
-            ->where('user_id', $User->id)
+            ->where('user_id', $User_id)
             ->where('event_type', 'view')
             ->where('item_type', 'product')
             ->where('item_id', $id)
             ->first();
         if (!$Statistics || strtotime($Statistics->created_at) + 86400 <= time()) {
             Statistics::create([
-                'user_id' => $User->id,
+                'user_id' => $User_id,
                 'event_type' => 'view',
                 'item_type' => 'product',
                 'item_id' => $id,

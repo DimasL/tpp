@@ -15,7 +15,7 @@
                             <div class="col-md-6"></div>
                             <div class="col-md-3 text-right">
                                 <ul class="list-inline top-buttons-ul">
-                                    @if(Auth::user()->isUserCan('create'))
+                                    @if(Auth::check() && Auth::user()->isUserCan('create'))
                                         <li>
                                             <a href="{{url('categories/create')}}" title="Add Category">
                                                 <i class="fa fa-plus"></i> Add

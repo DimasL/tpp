@@ -20,7 +20,7 @@
                                             <i class="fa fa-list"></i>
                                         </a>
                                     </li>
-                                    @if(in_array('admin', Auth::user()->roles()->lists('slug')->toArray()))
+                                    @if(Auth::check() && in_array('admin', Auth::user()->roles()->lists('slug')->toArray()))
                                         <li>
                                             <a href="{{url('products/update/' . $Product->id)}}" title="Update">
                                                 <i class="fa fa-pencil-square-o"></i>
@@ -60,11 +60,11 @@
                                 <p class="text-muted">Viewed: {{ $Product->getViewed() }}</p>
                             </div>
                             <div class="btn-group pull-right" role="group" style="margin:10px;">
-                                @if(Auth::user()->isSubscribed('products', $Product->id))
+                                @if(Auth::check() && Auth::user()->isSubscribed('products', $Product->id))
                                     <a href="{{ url('products/unsubscribe/' . $Product->id) }}" class="btn btn-default btn-alert"><span
                                                 class="fa fa-minus-circle"></span> Unsubscribe
                                     </a>
-                                @else
+                                @elseif(Auth::check())
                                     <a href="{{ url('products/subscribe/' . $Product->id) }}" class="btn btn-default btn-success"><span
                                                 class="fa fa-share-alt"></span> Subscribe
                                     </a>

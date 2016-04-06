@@ -59,7 +59,7 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
-    Route::group(['prefix' => 'products', 'middleware' => ['acl:read']], function () {
+    Route::group(['prefix' => 'products'], function () {
 
         Route::get('/', [
             'uses' => 'ProductController@productList'
@@ -75,14 +75,16 @@ Route::group(['middleware' => 'web'], function () {
 
 
         Route::get('subscribe/{id}', [
+            'middleware' => ['auth'],
             'uses' => 'UsersSubscriptionsController@productSubscribe'
         ]);
 
         Route::get('unsubscribe/{id}', [
+            'middleware' => ['auth'],
             'uses' => 'UsersSubscriptionsController@productUnsubscribe'
         ]);
 
-        Route::group(['before' => 'csrf'], function () {
+        Route::group(['before' => 'csrf', 'middleware' => ['auth']], function () {
 
             Route::any('create', [
                 'middleware' => ['acl:create'],
@@ -162,7 +164,7 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
-    Route::group(['prefix' => 'categories', 'middleware' => ['acl:read']], function () {
+    Route::group(['prefix' => 'categories'], function () {
 
         Route::get('/', [
             'uses' => 'CategoryController@categoriesList'
@@ -173,10 +175,12 @@ Route::group(['middleware' => 'web'], function () {
         ]);
 
         Route::get('subscribe/{id}', [
+            'middleware' => ['auth'],
             'uses' => 'UsersSubscriptionsController@categorySubscribe'
         ]);
 
         Route::get('unsubscribe/{id}', [
+            'middleware' => ['auth'],
             'uses' => 'UsersSubscriptionsController@categoryUnsubscribe'
         ]);
 

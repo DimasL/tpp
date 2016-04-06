@@ -35,29 +35,21 @@ class CategoryController extends Controller
     {
         $Category = Category::find($id);
         if (!$Category) {
-            Log::create([
-                'user_id' => Auth::user()->id,
-                'text' => 'Show category info by id="' . $id . '"',
-                'type' => 'read',
-                'status' => 'failed',
-            ]);
             abort(404);
         }
-        Log::create([
-            'user_id' => Auth::user()->id,
-            'text' => 'Show category info by id="' . $id . '"',
-            'type' => 'read',
-            'status' => 'success',
-        ]);
+        $User_id = 0;
+        if (Auth::check()) {
+            $User_id = Auth::user()->id;
+        }
         $Statistics = Statistics::orderBy('created_at', 'desc')
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', $User_id)
             ->where('event_type', 'view')
             ->where('item_type', 'category')
             ->where('item_id', $id)
             ->first();
         if (!$Statistics || strtotime($Statistics->created_at) + 86400 <= time()) {
             Statistics::create([
-                'user_id' => Auth::user()->id,
+                'user_id' => $User_id,
                 'event_type' => 'view',
                 'item_type' => 'category',
                 'item_id' => $id,
