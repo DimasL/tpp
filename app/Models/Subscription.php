@@ -50,17 +50,19 @@ class Subscription extends Model
     {
         $UsersSubscriptions = UsersSubscriptions::where('item_type', 'subscriptions')
             ->where('item_type', 'subscriptions')
-            ->where('status', 0)
-            ->where('finish', '<', date("Y-m-d H:i:s"))
+//            ->where('status', 0)
+            ->where('finish', '>', date("Y-m-d H:i:s"))
+            ->where('updated_at', '<', date("Y-m-d H:i:s", time() - 86400))
             ->get();
 
         foreach ($UsersSubscriptions as $UsersSubscription) {
             $email = $UsersSubscription->user->email;
             $Subscription = $UsersSubscription->subscription;
-            Mail::send('emails.subscriptionexpired', ['Subscription' => $Subscription], function ($message) use ($email) {
+            Mail::send('emails.news', ['Subscription' => $Subscription], function ($message) use ($email) {
                 $message->to($email)->subject('Subscription expired!');
             });
             $UsersSubscription->status = 1;
+            $UsersSubscription->touch();
             try {
                 $UsersSubscription->save();
             } catch (\Exception $e) {

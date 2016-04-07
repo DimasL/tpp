@@ -209,4 +209,13 @@ class SubscriptionController extends Controller
 
         return ['status' => true, 'Subscription' => $Subscription];
     }
+
+    /**
+     * Remind subscription
+     */
+    public function reminder()
+    {
+        Subscription::remind();
+        return response('',200);
+    }
 }

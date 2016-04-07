@@ -33,6 +33,10 @@ Route::group(['middleware' => 'web'], function () {
         return view('welcome');
     });
 
+    Route::get('reminder', [
+        'uses' => 'SubscriptionController@reminder'
+    ]);
+
     Route::get('/search', [
         'uses' => 'SearchController@search'
     ]);
