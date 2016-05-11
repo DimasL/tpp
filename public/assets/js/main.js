@@ -45,6 +45,9 @@ Tpp.prototype = {
         self.container.find('div.have-children').on('click', function () {
             self.toggleSubcategories(this);
         });
+        self.container.find('a.buy-now-button').on('click', function () {
+            self.toggleBuyNowSection(this);
+        });
     },
     deleteProduct: function (el) {
         var self = this;
@@ -78,7 +81,7 @@ Tpp.prototype = {
         var self = this;
         self.container.find('#deleteLogsModal div.deleteMessage').html('You try to delete all logs.<br/>Are you sure?');
     },
-    readURL: function(input) {
+    readURL: function (input) {
         var self = this;
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -89,15 +92,20 @@ Tpp.prototype = {
             self.container.find('#noImage').val('0');
         }
     },
-    deleteImage: function(el) {
+    deleteImage: function (el) {
         var self = this;
         $(el).parent().hide();
         self.container.find('#noImage').val('1');
         self.container.find('#imgInp').val('');
     },
-    toggleSubcategories: function(el) {
+    toggleSubcategories: function (el) {
         var self = this;
         var id = $(el).attr('data-id');
         self.container.find('li[data-id="' + id + '"]').toggleClass('hide');
+    },
+    toggleBuyNowSection: function (el) {
+        var self = this;
+        $(el).find('span').toggleClass('fa-minus fa-plus');
+        self.container.find('div.buy-now-section').slideToggle('fast');
     },
 };

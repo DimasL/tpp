@@ -33,244 +33,91 @@ Route::group(['middleware' => 'web'], function () {
         return view('welcome');
     });
 
-    Route::get('reminder', [
-        'uses' => 'SubscriptionController@reminder'
-    ]);
-
-    Route::get('/search', [
-        'uses' => 'SearchController@search'
-    ]);
+    Route::get('reminder', ['uses' => 'SubscriptionController@reminder']);
+    Route::get('/search', ['uses' => 'SearchController@search']);
 
     Route::group(['prefix' => 'logs', 'middleware' => ['role:admin', 'acl:read']], function () {
-
-        Route::get('/', [
-            'uses' => 'LogController@logList'
-        ]);
-
-        Route::get('view/{id}', [
-            'uses' => 'LogController@index'
-        ]);
+        Route::get('/', ['uses' => 'LogController@logList']);
+        Route::get('view/{id}', ['uses' => 'LogController@index']);
 
         Route::group(['before' => 'csrf'], function () {
-
-            Route::post('delete', [
-                'middleware' => ['acl:delete'],
-                'uses' => 'LogController@delete'
-            ]);
-
-            Route::post('deleteAll', [
-                'middleware' => ['acl:delete'],
-                'uses' => 'LogController@deleteAll'
-            ]);
-
+            Route::post('delete', ['middleware' => ['acl:delete'], 'uses' => 'LogController@delete']);
+            Route::post('deleteAll', ['middleware' => ['acl:delete'], 'uses' => 'LogController@deleteAll']);
         });
 
     });
 
     Route::group(['prefix' => 'products'], function () {
-
-        Route::get('/', [
-            'uses' => 'ProductController@productList'
-        ]);
-
-        Route::get('/category/{category_id}', [
-            'uses' => 'ProductController@productListByCategory'
-        ]);
-
-        Route::get('view/{id}', [
-            'uses' => 'ProductController@index'
-        ]);
-
-
-        Route::get('subscribe/{id}', [
-            'middleware' => ['auth'],
-            'uses' => 'UsersSubscriptionsController@productSubscribe'
-        ]);
-
-        Route::get('unsubscribe/{id}', [
-            'middleware' => ['auth'],
-            'uses' => 'UsersSubscriptionsController@productUnsubscribe'
-        ]);
+        Route::get('/', ['uses' => 'ProductController@productList']);
+        Route::get('/category/{category_id}', ['uses' => 'ProductController@productListByCategory']);
+        Route::get('view/{id}', ['uses' => 'ProductController@index']);
+        Route::post('buy', ['uses' => 'AuthorizeController@buyProduct']);
+        Route::get('subscribe/{id}', ['middleware' => ['auth'], 'uses' => 'UsersSubscriptionsController@productSubscribe']);
+        Route::get('unsubscribe/{id}', ['middleware' => ['auth'], 'uses' => 'UsersSubscriptionsController@productUnsubscribe']);
 
         Route::group(['before' => 'csrf', 'middleware' => ['auth']], function () {
-
-            Route::any('create', [
-                'middleware' => ['acl:create'],
-                'uses' => 'ProductController@create'
-            ]);
-
-            Route::any('update/{id}', [
-                'middleware' => ['acl:update'],
-                'uses' => 'ProductController@update'
-            ]);
-
-            Route::post('delete/{id}', [
-                'middleware' => ['acl:delete'],
-                'uses' => 'ProductController@delete'
-            ]);
-
+            Route::any('create', ['middleware' => ['acl:create'], 'uses' => 'ProductController@create']);
+            Route::any('update/{id}', ['middleware' => ['acl:update'], 'uses' => 'ProductController@update']);
+            Route::post('delete/{id}', ['middleware' => ['acl:delete'], 'uses' => 'ProductController@delete']);
         });
 
     });
 
     Route::group(['prefix' => 'subscriptions', 'middleware' => ['acl:read']], function () {
-
-        Route::get('/', [
-            'uses' => 'SubscriptionController@subscriptionList'
-        ]);
-
-        Route::get('view/{id}', [
-            'uses' => 'SubscriptionController@index'
-        ]);
-
-        Route::any('subscribe/{id}', [
-            'uses' => 'UsersSubscriptionsController@subscribe'
-        ]);
-
-        Route::any('unsubscribe/{id}', [
-            'uses' => 'UsersSubscriptionsController@unsubscribe'
-        ]);
-
-        Route::any('remove/{id}', [
-            'uses' => 'UsersSubscriptionsController@unsubscribe'
-        ]);
+        Route::get('/', ['uses' => 'SubscriptionController@subscriptionList']);
+        Route::get('view/{id}', ['uses' => 'SubscriptionController@index']);
+        Route::any('subscribe/{id}', ['uses' => 'UsersSubscriptionsController@subscribe']);
+        Route::any('unsubscribe/{id}', ['uses' => 'UsersSubscriptionsController@unsubscribe']);
+        Route::any('remove/{id}', ['uses' => 'UsersSubscriptionsController@unsubscribe']);
 
         Route::group(['before' => 'csrf'], function () {
-
-            Route::any('create', [
-                'middleware' => ['acl:create'],
-                'uses' => 'SubscriptionController@create'
-            ]);
-
-            Route::any('update/{id}', [
-                'middleware' => ['acl:update'],
-                'uses' => 'SubscriptionController@update'
-            ]);
-
-            Route::post('delete/{id}', [
-                'middleware' => ['acl:delete'],
-                'uses' => 'SubscriptionController@delete'
-            ]);
-
+            Route::any('create', ['middleware' => ['acl:create'], 'uses' => 'SubscriptionController@create']);
+            Route::any('update/{id}', ['middleware' => ['acl:update'], 'uses' => 'SubscriptionController@update']);
+            Route::post('delete/{id}', ['middleware' => ['acl:delete'], 'uses' => 'SubscriptionController@delete']);
         });
 
     });
 
     Route::group(['prefix' => 'mysubscriptions', 'middleware' => ['acl:read']], function () {
-
-        Route::get('/', [
-            'uses' => 'UsersSubscriptionsController@mySubscriptionsList'
-        ]);
-
-        Route::get('view/{id}', [
-            'uses' => 'UsersSubscriptionsController@index'
-        ]);
-
-        Route::any('resume/{id}', [
-            'uses' => 'UsersSubscriptionsController@subscribe'
-        ]);
-
+        Route::get('/', ['uses' => 'UsersSubscriptionsController@mySubscriptionsList']);
+        Route::get('view/{id}', ['uses' => 'UsersSubscriptionsController@index']);
+        Route::any('resume/{id}', ['uses' => 'UsersSubscriptionsController@subscribe']);
     });
 
     Route::group(['prefix' => 'categories'], function () {
-
-        Route::get('/', [
-            'uses' => 'CategoryController@categoriesList'
-        ]);
-
-        Route::get('view/{id}', [
-            'uses' => 'CategoryController@index'
-        ]);
-
-        Route::get('subscribe/{id}', [
-            'middleware' => ['auth'],
-            'uses' => 'UsersSubscriptionsController@categorySubscribe'
-        ]);
-
-        Route::get('unsubscribe/{id}', [
-            'middleware' => ['auth'],
-            'uses' => 'UsersSubscriptionsController@categoryUnsubscribe'
-        ]);
+        Route::get('/', ['uses' => 'CategoryController@categoriesList']);
+        Route::get('view/{id}', ['uses' => 'CategoryController@index']);
+        Route::get('subscribe/{id}', ['middleware' => ['auth'], 'uses' => 'UsersSubscriptionsController@categorySubscribe']);
+        Route::get('unsubscribe/{id}', ['middleware' => ['auth'], 'uses' => 'UsersSubscriptionsController@categoryUnsubscribe']);
 
         Route::group(['before' => 'csrf'], function () {
-
-            Route::any('create', [
-                'middleware' => ['acl:create'],
-                'uses' => 'CategoryController@create'
-            ]);
-
-            Route::any('update/{id}', [
-                'middleware' => ['acl:update'],
-                'uses' => 'CategoryController@update'
-            ]);
-
-            Route::post('delete/{id}', [
-                'middleware' => ['acl:delete'],
-                'uses' => 'CategoryController@delete'
-            ]);
-
+            Route::any('create', ['middleware' => ['acl:create'], 'uses' => 'CategoryController@create']);
+            Route::any('update/{id}', ['middleware' => ['acl:update'], 'uses' => 'CategoryController@update']);
+            Route::post('delete/{id}', ['middleware' => ['acl:delete'], 'uses' => 'CategoryController@delete']);
         });
 
     });
 
     Route::group(['prefix' => 'users', 'middleware' => ['acl:read']], function () {
-
-        Route::get('/', [
-            'uses' => 'UserController@userList'
-        ]);
-
-        Route::get('view/{id}', [
-            'uses' => 'UserController@index'
-        ]);
+        Route::get('/', ['uses' => 'UserController@userList']);
+        Route::get('view/{id}', ['uses' => 'UserController@index']);
 
         Route::group(['before' => 'csrf'], function () {
-
-            Route::any('create', [
-                'middleware' => ['acl:create'],
-                'uses' => 'UserController@create'
-            ]);
-
-            Route::any('update/{id}', [
-                'middleware' => ['acl:update'],
-                'uses' => 'UserController@update'
-            ]);
-
-            Route::post('delete/{id}', [
-                'middleware' => ['acl:delete'],
-                'uses' => 'UserController@delete'
-            ]);
-
+            Route::any('create', ['middleware' => ['acl:create'], 'uses' => 'UserController@create']);
+            Route::any('update/{id}', ['middleware' => ['acl:update'], 'uses' => 'UserController@update']);
+            Route::post('delete/{id}', ['middleware' => ['acl:delete'], 'uses' => 'UserController@delete']);
         });
 
     });
 
     Route::group(['prefix' => 'profile', 'middleware' => ['acl:read']], function () {
-
-        Route::get('/', [
-            'uses' => 'UserController@profile'
-        ]);
-
-        Route::any('/update', [
-            'uses' => 'UserController@updateProfile'
-        ]);
+        Route::get('/', ['uses' => 'UserController@profile']);
+        Route::any('/update', ['uses' => 'UserController@updateProfile']);
 
         Route::group(['before' => 'csrf'], function () {
-
-            Route::any('create', [
-                'middleware' => ['acl:create'],
-                'uses' => 'UserController@create'
-            ]);
-
-            Route::any('update/{id}', [
-                'middleware' => ['acl:update'],
-                'uses' => 'UserController@update'
-            ]);
-
-            /*Route::post('delete/{id}', [
-                'middleware' => ['acl:delete'],
-                'uses' => 'UserController@delete'
-            ]);*/
-
+            Route::any('create', ['middleware' => ['acl:create'], 'uses' => 'UserController@create']);
+            Route::any('update/{id}', ['middleware' => ['acl:update'], 'uses' => 'UserController@update']);
+            /*Route::post('delete/{id}', ['middleware' => ['acl:delete'], 'uses' => 'UserController@delete']);*/
         });
 
     });

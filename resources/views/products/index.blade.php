@@ -69,13 +69,61 @@
                                                 class="fa fa-share-alt"></span> Subscribe
                                     </a>
                                 @endif
-                                <!--<button type="button" class="btn btn-default btn-success"><span
-                                            class="fa fa-plus"></span> Add to Cart
-                                </button>
-                                <button type="button" class="btn btn-default btn-info"><span
+                                <a href="#" class="btn btn-default btn-success buy-now-button"><span
+                                            class="fa fa-plus"></span> Buy Now
+                                </a>
+                                <!--<button type="button" class="btn btn-default btn-info"><span
                                             class="fa fa-shopping-cart"></span> Checkout
                                 </button>-->
                             </div>
+                        </div>
+                        <div class="row buy-now-section" style="display: none">
+                            <form action="{{ url('products/buy') }}" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="product_id" value="{{ $Product->id }}">
+                                <div class="col-md-6">
+                                    <div class="form-group @if($errors->first('card_number'))has-error @endif">
+                                        <label class="control-label" for="titleInput">Card number*</label>
+                                        <input name="card_number" type="text" value="4007000000027" class="form-control" autocomplete="off" required>
+                                        <span class="help-block">{{$errors->first('card_number')}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group @if($errors->first('cvv'))has-error @endif">
+                                        <label class="control-label" for="titleInput">CVV*</label>
+                                        <input name="cvv" type="password" value="" class="form-control" autocomplete="off" required>
+                                        <span class="help-block">{{$errors->first('cvv')}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group @if($errors->first('card_number'))has-error @endif">
+                                        <label class="control-label" for="titleInput">Exp Month*</label>
+                                        <select class="form-control" name="exp_month" autocomplete="off" required>
+                                            <option value="">Select a month</option>
+                                            @for ($i = 1; $i < 13; $i++)
+                                                <option value="{{ date('n', mktime(0, 0, 0, $i, 10)) }}">{{ date('F', mktime(0, 0, 0, $i, 10)) }}</option>
+                                            @endfor
+                                        </select>
+                                        <span class="help-block">{{$errors->first('card_number')}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label" for="titleInput">Exp Year*</label>
+                                    <select name="exp_year" class="form-control" autocomplete="off" required>
+                                        <option class="title" value="">Year</option>
+                                        @for ($i = 0; $i < 15; $i++)
+                                            <option value="{{ date("Y") + $i }}">{{ date("Y") + $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button type="submit" class="btn btn-success float-right">Purchase</button>
+                                    </div>
+                                </div>
+
+                            </form>
                         </div>
                     </div>
                 </div>
