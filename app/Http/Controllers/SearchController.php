@@ -13,6 +13,19 @@ class SearchController extends Controller
 {
     public function search(Request $request)
     {
+
+        $client = \Elasticsearch\ClientBuilder::create()->build();
+
+        $params = [
+            'index' => 'my_index',
+            'type' => 'my_type',
+            'id' => 'my_id',
+            'body' => ['testField' => 'abc']
+        ];
+
+        $response = $client->index($params);
+        dd($response);
+
         $Products = Product::where('title', 'LIKE', '%' . $request->srch . '%')
             ->orWhere('description', 'LIKE', '%' . $request->srch . '%')
             ->get();
