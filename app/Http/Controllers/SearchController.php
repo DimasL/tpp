@@ -8,46 +8,17 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
+use sngrl\SphinxSearch\SphinxSearch;
 
 class SearchController extends Controller
 {
     public function search(Request $request)
     {
-
-        $client = \Elasticsearch\ClientBuilder::create()->build();
-
-        $params = [
-            'index' => 'my_index',
-            'type' => 'my_type',
-            'id' => 'my_id',
-            'body' => ['testField' => 'abc']
-        ];
-
-        $response = $client->index($params);
-        dd($response);
-
-        $Products = Product::where('title', 'LIKE', '%' . $request->srch . '%')
-            ->orWhere('description', 'LIKE', '%' . $request->srch . '%')
+        $sphinx = new SphinxSearch();
+        $Products = Product::whereIn('id', array_column(json_decode(json_encode($sphinx->search($request->srch, 'product')->get()), true), 'id'))
             ->get();
-        $Categories = Category::where('title', 'LIKE', '%' . $request->srch . '%')
-            ->orWhere('description', 'LIKE', '%' . $request->srch . '%')
+        $Categories = Category::whereIn('id', array_column(json_decode(json_encode($sphinx->search($request->srch, 'category')->get()), true), 'id'))
             ->get();
-
-
-//        $perPage = 5;
-//        $Categories = DB::table('categories')
-//            ->where('title', 'LIKE', '%' . $request->srch . '%')
-//            ->orWhere('description', 'LIKE', '%' . $request->srch . '%')
-//            ->select('id', 'title', 'description');
-//        $Search = DB::table('products')
-//            ->where('title', 'LIKE', '%' . $request->srch . '%')
-//            ->orWhere('description', 'LIKE', '%' . $request->srch . '%')
-//            ->select('id', 'title', 'description')
-//            ->union($Categories)
-//            ->get();
-//        if($request->page) {
-//            $Search = array_slice($Search, ($perPage * $request->page) - 1, ($perPage * $request->page) + $request->page);
-//        }
 
         return view('search')
             ->with(['srch' => $request->srch])

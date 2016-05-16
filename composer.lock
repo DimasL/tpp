@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7b3b907b27f6ade8beacd4c9215d98e6",
-    "content-hash": "6946d59f20461598679290d74e6b7e9b",
+    "hash": "d1b93f5b6f1c2f6bcda10dad10dd39a7",
+    "content-hash": "d9fe0997a5a4bb5ef57b8f25066e0bf1",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -542,6 +542,57 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
+        },
+        {
+            "name": "gigablah/sphinxphp",
+            "version": "2.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gigablah/sphinxphp.git",
+                "reference": "6d5e97fdd33c1129ca372203d1330827c1cbc46c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gigablah/sphinxphp/zipball/6d5e97fdd33c1129ca372203d1330827c1cbc46c",
+                "reference": "6d5e97fdd33c1129ca372203d1330827c1cbc46c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Sphinx": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Aksyonoff",
+                    "homepage": "http://sphinxsearch.com/"
+                }
+            ],
+            "description": "Sphinx Search PHP API",
+            "homepage": "http://sphinxsearch.com/",
+            "keywords": [
+                "api",
+                "search",
+                "sphinx"
+            ],
+            "time": "2013-08-22 08:05:44"
         },
         {
             "name": "goetas/xsd-reader",
@@ -1649,6 +1700,51 @@
                 "shell"
             ],
             "time": "2016-03-09 05:03:14"
+        },
+        {
+            "name": "sngrl/sphinxsearch",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sngrl/sphinxsearch.git",
+                "reference": "4bede4909dad87e9749f266ee66ae2375c75569a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sngrl/sphinxsearch/zipball/4bede4909dad87e9749f266ee66ae2375c75569a",
+                "reference": "4bede4909dad87e9749f266ee66ae2375c75569a",
+                "shasum": ""
+            },
+            "require": {
+                "gigablah/sphinxphp": "2.0.8",
+                "illuminate/support": "~5.0",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "sngrl\\SphinxSearch": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "sngrl",
+                    "email": "reserved@mail.ru"
+                }
+            ],
+            "description": "Laravel package to query Sphinxsearch in Laravel 5",
+            "homepage": "http://github.com/sngrl/sphinxsearch",
+            "keywords": [
+                "laravel",
+                "laravel 5",
+                "sphinx",
+                "sphinxsearch"
+            ],
+            "time": "2015-10-14 08:16:40"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3413,6 +3509,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "jms/serializer": 20,
+        "sngrl/sphinxsearch": 20,
         "goetas/xsd2php": 20,
         "goetas/xsd-reader": 20
     },
