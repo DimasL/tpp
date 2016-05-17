@@ -9,8 +9,7 @@
         "laravel/framework": "5.2.*",
         "ext-curl": "*",
         "authorizenet/authorizenet": "1.8.8",
-        "jms/serializer": "xsd2php-dev as 0.18.0",
-        "sngrl/sphinxsearch": "dev-master"
+        "jms/serializer": "xsd2php-dev as 0.18.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
